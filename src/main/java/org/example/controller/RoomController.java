@@ -16,6 +16,41 @@ public class RoomController extends Controller {
         rooms = new ArrayList<>();
     }
 
+    public void makeTestData() {
+        rooms.add(new Room(1, 3, 1, "비어있음", "예약가능"));
+        rooms.add(new Room(2, 3, 2, "2020-01-01 11:11:11", "예약불가"));
+        rooms.add(new Room(3, 3, 1, "2020-01-01 11:11:11", "예약불가"));
+        rooms.add(new Room(4, 3, 2, "비어있음", "예약가능"));
+        rooms.add(new Room(5, 3, 1, "비어있음", "예약가능"));
+        rooms.add(new Room(6, 3, 2, "비어있음", "예약가능"));
+        rooms.add(new Room(7, 3, 1, "2020-01-01 11:11:11", "예약불가"));
+        rooms.add(new Room(8, 3, 2, "2020-01-01 11:11:11", "예약불가"));
+        rooms.add(new Room(9, 3, 1, "비어있음", "예약가능"));
+        rooms.add(new Room(10, 3, 2, "비어있음", "예약가능"));
+
+        rooms.add(new Room(1, 4, 1, "비어있음", "예약가능"));
+        rooms.add(new Room(2, 4, 2, "2020-01-01 11:11:11", "예약불가"));
+        rooms.add(new Room(3, 4, 1, "2020-01-01 11:11:11", "예약불가"));
+        rooms.add(new Room(4, 4, 2, "비어있음", "예약가능"));
+        rooms.add(new Room(5, 4, 1, "비어있음", "예약가능"));
+        rooms.add(new Room(6, 4, 2, "비어있음", "예약가능"));
+        rooms.add(new Room(7, 4, 1, "2020-01-01 11:11:11", "예약불가"));
+        rooms.add(new Room(8, 4, 2, "2020-01-01 11:11:11", "예약불가"));
+        rooms.add(new Room(9, 4, 1, "비어있음", "예약가능"));
+        rooms.add(new Room(10, 4, 2, "비어있음", "예약가능"));
+
+        rooms.add(new Room(1, 5, 1, "비어있음", "예약가능"));
+        rooms.add(new Room(2, 5, 2, "2020-01-01 11:11:11", "예약불가"));
+        rooms.add(new Room(3, 5, 1, "2020-01-01 11:11:11", "예약불가"));
+        rooms.add(new Room(4, 5, 2, "비어있음", "예약가능"));
+        rooms.add(new Room(5, 5, 1, "비어있음", "예약가능"));
+        rooms.add(new Room(6, 5, 2, "비어있음", "예약가능"));
+        rooms.add(new Room(7, 5, 1, "2020-01-01 11:11:11", "예약불가"));
+        rooms.add(new Room(8, 5, 2, "2020-01-01 11:11:11", "예약불가"));
+        rooms.add(new Room(9, 5, 1, "비어있음", "예약가능"));
+        rooms.add(new Room(10, 5, 2, "비어있음", "예약가능"));
+    }
+
     public void doAction(String cmd, String actionMethodName) {
         this.cmd = cmd;
 
@@ -41,11 +76,19 @@ public class RoomController extends Controller {
             List<Room> forPrintRooms = rooms;
 
             System.out.println("============= 3층 객실 현황 =============");
-            System.out.println("객실 호수 | 객실 타입 | 예약 날짜 | 예약 상태");
+            System.out.println("호수 | 객실타입 | 예약상태 | 예약날짜");
 
             for(int i = 0; i < forPrintRooms.size(); i++) {
                 Room room = forPrintRooms.get(i);
-                System.out.printf("30%d | %s | %s | %s", room.id, room.type, room.bookingDate, room.booked);
+
+                if(room.floor == 3) {
+                    if(room.id != 10) {
+                        System.out.printf("30%d  | %8s | %s | %s\n", room.id, room.type, room.booked, room.bookingDate);
+                    }
+                    else {
+                        System.out.printf("3%d  | %8s | %s | %s\n", room.id, room.type, room.booked, room.bookingDate);
+                    }
+                }
             }
         }
 
@@ -53,11 +96,19 @@ public class RoomController extends Controller {
             List<Room> forPrintRooms = rooms;
 
             System.out.println("============= 4층 객실 현황 =============");
-            System.out.println("객실 호수 | 객실 타입 | 예약 날짜 | 예약 상태");
+            System.out.println("호수 | 객실타입 | 예약상태 | 예약날짜");
 
             for(int i = 0; i < forPrintRooms.size(); i++) {
                 Room room = forPrintRooms.get(i);
-                System.out.printf("40%d | %s | %s | %s", room.id, room.type, room.bookingDate, room.booked);
+
+                if(room.floor == 4) {
+                    if(room.id != 10) {
+                        System.out.printf("40%d  | %8s | %s | %s\n", room.id, room.type, room.booked, room.bookingDate);
+                    }
+                    else {
+                        System.out.printf("4%d  | %8s | %s | %s\n", room.id, room.type, room.booked, room.bookingDate);
+                    }
+                }
             }
         }
 
@@ -65,11 +116,19 @@ public class RoomController extends Controller {
             List<Room> forPrintRooms = rooms;
 
             System.out.println("============= 5층 객실 현황 =============");
-            System.out.println("객실 호수 | 객실 타입 | 예약 날짜 | 예약 상태");
+            System.out.println("호수 | 객실타입 | 예약상태 | 예약날짜");
 
             for(int i = 0; i < forPrintRooms.size(); i++) {
                 Room room = forPrintRooms.get(i);
-                System.out.printf("50%d | %s | %s | %s", room.id, room.type, room.bookingDate, room.booked);
+
+                if(room.floor == 5) {
+                    if(room.id != 10) {
+                        System.out.printf("50%d  | %8s | %s | %s\n", room.id, room.type, room.booked, room.bookingDate);
+                    }
+                    else {
+                        System.out.printf("5%d  | %8s | %s | %s\n", room.id, room.type, room.booked, room.bookingDate);
+                    }
+                }
             }
         }
 

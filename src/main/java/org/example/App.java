@@ -27,6 +27,8 @@ public class App {
 
         Scanner sc = new Scanner(System.in);
 
+        roomController.makeTestData();
+
         while(true) {
             System.out.print("서비스를 입력해주세요) ");
             String cmd = sc.nextLine();

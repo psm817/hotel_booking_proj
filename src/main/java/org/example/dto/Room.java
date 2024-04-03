@@ -6,4 +6,12 @@ public class Room {
     public int type;
     public String bookingDate;
     public String booked;
+
+    public Room(int id, int floor, int type, String bookingDate, String booked) {
+        this.id = id;
+        this.floor = floor;
+        this.type = type;
+        this.bookingDate = bookingDate;
+        this.booked = booked;
+    }
 }
