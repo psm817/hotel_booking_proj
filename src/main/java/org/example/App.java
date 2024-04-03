@@ -10,20 +10,20 @@ public class App {
         System.out.printf("\n");
         System.out.println("=============== 서비스 모음 ===============");
         System.out.println("1. 호텔 소개 : hotel introduce");
-        System.out.println("2. 방 조회하기 : room list");
-        System.out.println("3. 방 예약하기 : room booking");
+        System.out.println("2. 객실 조회하기 : room list");        // 층별로 조회
+        System.out.println("3. 객실 예약하기 : room booking");
         System.out.println("4. 예약 확인하기 : booking check");
         System.out.println("5. 예약정보 수정 : booking modify");
         System.out.println("6. 예약 취소 : booking delete");
-        System.out.println("7. 로그인/로그아웃 : guset login/logout");
-        System.out.println("8. 회원 가입 : guset join");
+        System.out.println("7. 로그인/로그아웃 : guest login/logout");
+        System.out.println("8. 회원 가입 : guest join");
         System.out.println("===========================================");
         System.out.printf("\n");
 
         HotelController hotelController = new HotelController();
         RoomController roomController = new RoomController();
         BookingController bookingController = new BookingController();
-        GusetController gusetController = new GusetController();
+        GuestController guestController = new GuestController();
 
         Scanner sc = new Scanner(System.in);
 
@@ -62,7 +62,7 @@ public class App {
                 controller = bookingController;
             }
             else if(controllerName.equals("guset")) {
-                controller = gusetController;
+                controller = guestController;
             }
             else {
                 System.out.println("존재하지 않는 서비스입니다.");
@@ -71,9 +71,7 @@ public class App {
 
             String actionName = controllerName + "/" + actionMethodName;
 
-            switch(actionName) {
-
-            }
+            controller.doAction(cmd, actionMethodName);
 
         }
 

@@ -2,11 +2,11 @@ package org.example.controller;
 
 import java.util.Scanner;
 
-public class BookingController extends Controller {
+public class GuestController extends Controller {
     private Scanner sc;
     private String cmd;
 
-    public BookingController() {
+    public GuestController() {
         sc = new Scanner(System.in);
     }
     public void doAction(String cmd, String actionMethodName) {
