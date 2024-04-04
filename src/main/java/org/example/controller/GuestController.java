@@ -38,16 +38,30 @@ public class GuestController extends Controller {
     public void doJoin() {
         int id = guests.size() + 1;
         String regDate = String.valueOf(Util.getTodayDate());
+        String loginId = null;
+        String loginPw = null;
+        String loginPwConfirm = null;
 
+        // ID 검사
         while(true) {
             System.out.print("ID : ");
-            String loginId = sc.nextLine();
+            loginId = sc.nextLine();
 
+            if(isJoinableLoginId(loginId) == false) {
+                System.out.printf("%s는 이미 사용 중인 ID 입니다. 다시 입력해 주세요.\n", loginId);
+                continue;
+            }
+
+            break;
+        }
+
+        // PW 검사
+        while(true) {
             System.out.print("PW : ");
-            String loginPw = sc.nextLine();
+            loginPw = sc.nextLine();
 
             System.out.print("PW 확인 : ");
-            String loginPwConfirm = sc.nextLine();
+            loginPwConfirm = sc.nextLine();
 
             if(loginPw.equals(loginPwConfirm) == false) {
                 System.out.println("비밀번호가 일치하지 않습니다.");
@@ -57,11 +71,53 @@ public class GuestController extends Controller {
             break;
         }
 
+        // 나머지 항목 입력 후 배열에 추가
+        System.out.print("이름 : ");
+        String name = sc.nextLine();
+        System.out.print("이메일 : ");
+        String email = sc.nextLine();
+        System.out.print("전화번호 : ");
+        String phoneNum = sc.nextLine();
+
+        Guest guest = new Guest(id, regDate, loginId, loginPw, name, email, phoneNum);
+        guests.add(guest);
+
+        System.out.println("회원가입이 완료되었습니다. 환영합니다!!");
+
     }
 
     public void doLogin() {
+        System.out.print("ID : ");
+        String loginId = sc.nextLine();
+        System.out.print("PW : ");
+        String loginPw = sc.nextLine();
+
+
     }
 
     public void doLogout() {
+    }
+
+    private boolean isJoinableLoginId(String loginId) {
+        int index = getGuestIndexByLoginId(loginId);
+
+        if(index == -1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private int getGuestIndexByLoginId(String loginId) {
+        int i = 0;
+
+        for(Guest guest : guests) {
+            if(guest.loginId.equals(loginId)) {
+                return i;
+            }
+            i++;
+        }
+
+        return -1;
     }
 }
