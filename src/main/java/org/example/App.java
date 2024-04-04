@@ -12,13 +12,13 @@ public class App {
         System.out.println("=============== 서비스 모음 ===============");
         System.out.println("1. 호텔 소개 : hotel introduce");
         System.out.println("2. 객실 예약현황 : room list");
-        System.out.println("3. 객실 예약하기 : booking room");
+        System.out.println("3. 객실 예약하기 : booking room");        // id, roomId, floor, guestName, guestPhone, type, regDate
         System.out.println("4. 예약 확인하기 : booking check");
         System.out.println("5. 예약정보 수정 : booking modify");
         System.out.println("6. 예약 취소 : booking delete");
         System.out.println("7. 로그인/로그아웃 : guest login/logout");
         System.out.println("8. 회원 가입 : guest join");
-        System.out.println("9. 후기 남기기 : ");
+        System.out.println("9. 리뷰 남기기 : booking review");
         System.out.println("===========================================");
         System.out.printf("\n");
 
@@ -30,6 +30,7 @@ public class App {
         Scanner sc = new Scanner(System.in);
 
         roomController.makeTestData();
+        bookingController.makeTestData();
 
         while(true) {
             System.out.print("서비스를 입력해주세요) ");
@@ -65,7 +66,7 @@ public class App {
             else if(controllerName.equals("booking")) {
                 controller = bookingController;
             }
-            else if(controllerName.equals("guset")) {
+            else if(controllerName.equals("guest")) {
                 controller = guestController;
             }
             else {

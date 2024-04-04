@@ -1,7 +1,6 @@
 package org.example.dto;
 
-public class Room {
-    public int id;          // 호수
+public class Room extends Dto {
     public int floor;       // 층
     public int type;        // 싱글, 더블
     public String bookingDate;      // 예약한 날짜
