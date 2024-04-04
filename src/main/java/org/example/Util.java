@@ -24,6 +24,10 @@ public class Util {
             return false;
         }
 
+        if(inputLocalDate.isBefore(currentDate)) {
+            return false;
+        }
+
         // 현재 날짜와 입력한 날짜 사이의 차이 계산
         int difference = Math.abs((int) (currentDate.toEpochDay() - inputLocalDate.toEpochDay()));
 

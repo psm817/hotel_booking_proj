@@ -87,7 +87,7 @@ public class RoomController extends Controller {
             for(int i = 0; i < forPrintRooms.size(); i++) {
                 Room room = forPrintRooms.get(i);
 
-                if(room.nowDate.equals(checkDate)) {
+                if(room.dayOfSelect.equals(checkDate)) {
                     if(room.floor == 3) {
                         if(room.id != 10) {
                             System.out.printf("30%d  | %8s | %s\n", room.id, room.type, room.booked);
@@ -111,7 +111,7 @@ public class RoomController extends Controller {
             for(int i = 0; i < forPrintRooms.size(); i++) {
                 Room room = forPrintRooms.get(i);
 
-                if(room.nowDate.equals(checkDate)) {
+                if(room.dayOfSelect.equals(checkDate)) {
                     if(room.floor == 4) {
                         if(room.id != 10) {
                             System.out.printf("40%d  | %8s | %s\n", room.id, room.type, room.booked);
@@ -135,7 +135,7 @@ public class RoomController extends Controller {
             for(int i = 0; i < forPrintRooms.size(); i++) {
                 Room room = forPrintRooms.get(i);
 
-                if(room.nowDate.equals(checkDate)) {
+                if(room.dayOfSelect.equals(checkDate)) {
                     if(room.floor == 5) {
                         if(room.id != 10) {
                             System.out.printf("50%d  | %8s | %s\n", room.id, room.type, room.booked);
