@@ -6,6 +6,7 @@ import org.example.dto.Guest;
 import org.example.dto.Room;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -52,9 +53,10 @@ public class BookingController extends Controller {
             return;
         }
 
-        System.out.print("예약할 객실 호수 입력) ");
+        System.out.print("예약할 객실 호수 입력(숫자만) : ");
         int roomNum = sc.nextInt();
         sc.nextLine();
+
 
         // 날짜 입력 및 7일간 날짜 판단
         System.out.print("예약 날짜 입력) ");
@@ -75,23 +77,42 @@ public class BookingController extends Controller {
             return;
         }
 
+        // 요금 안내
+        int payment = 150000;
+        int count = 0;
+        int plusPay = 20000;
+
         // 객실 타입 안내
         if(roomNum % 2 == 1) {
-            System.out.printf("*** %d호 객실의 타입은 [%d] ***\n", roomNum, bookingAbleRoom.type);
+//            System.out.printf("*** %d호 객실의 타입은 [%d] ***\n", roomNum, bookingAbleRoom.type);
+            System.out.print("인원은 몇 명 이신가요?) ");
+            int peopleNum = sc.nextInt();
+            sc.nextLine();
+
+            if(peopleNum > 2) {
+                count = peopleNum - 2;
+                System.out.println("[싱글] 정원 2명을 초과하셨습니다!!");
+                System.out.println("추가 인원 당 20,000원의 추가 요금이 발생합니다!!");
+            }
         }
         else if(roomNum % 2 == 0) {
-            System.out.printf("*** %s호 객실의 타입은 [%s] ***\n", roomNum, bookingAbleRoom.type);
+            payment += 100000;
+            System.out.print("인원은 몇 명 이신가요?) ");
+            int peopleNum = sc.nextInt();
+            sc.nextLine();
+
+            if(peopleNum > 4) {
+                count = peopleNum - 4;
+                System.out.println("[더블] 정원 4명을 초과하셨습니다!!");
+                System.out.println("추가 인원 당 20,000원의 추가 요금이 발생합니다!!");
+            }
         }
-
-        // 인원확인
-
-
 
         Booking booking = null;
 
         while(true) {
             int id = bookings.size() + 1;
-            System.out.print("예약이 가능합니다. 예약을 진행할까요?) ");
+            System.out.print("예약을 진행할까요?) ");
             String answer = sc.nextLine();
             answer = answer.trim();
 
@@ -102,7 +123,7 @@ public class BookingController extends Controller {
 
                 // 로그인된 회원의 이름으로 예약 성공
                 System.out.printf("%s님 예약 성공하셨습니다!!\n", booking.guestName);
-                System.out.println("결제는 당일 카운터에서 진행 부탁드립니다!");
+                System.out.printf("총 금액은 %d입니다. 결제는 당일 카운터에서 진행 부탁드립니다!\n", (payment+(count*plusPay)));
 
                 break;
             }
