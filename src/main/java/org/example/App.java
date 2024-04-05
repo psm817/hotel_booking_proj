@@ -77,6 +77,32 @@ public class App {
 
             String actionName = controllerName + "/" + actionMethodName;
 
+            // 로그인을 요구하는 서비스
+            switch(actionName) {
+                case "booking/room" :
+                case "booking/check" :
+                case "booking/modify" :
+                case "booking/delete" :
+                case "guest/logout" :
+                case "booking/review" :
+                    if(Controller.isLogined() == false) {
+                        System.out.println("로그인 후 이용가능합니다.");
+                        continue;
+                    }
+                    break;
+            }
+
+            // 로그아웃을 요구하는 서비스
+            switch(actionName) {
+                case "guest join" :
+                case "guest login" :
+                    if(Controller.isLogined()) {
+                        System.out.println("로그아웃 후 이용가능합니다.");
+                        continue;
+                    }
+                    break;
+            }
+
             controller.doAction(cmd, actionMethodName);
 
         }

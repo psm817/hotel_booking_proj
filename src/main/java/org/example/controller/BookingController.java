@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.Util;
+import org.example.dto.Booking;
 import org.example.dto.Guest;
 import org.example.dto.Room;
 
@@ -12,30 +13,32 @@ public class BookingController extends Controller {
     private Scanner sc;
     private String cmd;
     private List<Room> rooms;
+    private List<Booking> bookings;
 
     public BookingController() {
         sc = new Scanner(System.in);
         rooms = new ArrayList<>();
+        bookings = new ArrayList<>();
     }
 
     public void makeTestData() {
-        rooms.add(new Room(1, 3, 1, null, "2024-04-04", "예약가능"));
-        rooms.add(new Room(2, 3, 2, "2020-01-01", "2024-04-04", "예약불가"));
-        rooms.add(new Room(3, 3, 1, "2020-01-01", "2024-04-04", "예약불가"));
-        rooms.add(new Room(4, 3, 2, null, "2024-04-04", "예약가능"));
-        rooms.add(new Room(5, 3, 1, "2020-01-01", "2024-04-04", "예약가능"));
+        rooms.add(new Room(1, 3, 1, null, "2024-04-05", "예약가능"));
+        rooms.add(new Room(2, 3, 2, "2020-01-01", "2024-04-05", "예약불가"));
+        rooms.add(new Room(3, 3, 1, "2020-01-01", "2024-04-05", "예약불가"));
+        rooms.add(new Room(4, 3, 2, null, "2024-04-05", "예약가능"));
+        rooms.add(new Room(5, 3, 1, "2020-01-01", "2024-04-05", "예약가능"));
 
-        rooms.add(new Room(1, 4, 1, null, "2024-04-04", "예약가능"));
-        rooms.add(new Room(2, 4, 2, "2020-01-01", "2024-04-04", "예약불가"));
-        rooms.add(new Room(3, 4, 1, "2020-01-01", "2024-04-04", "예약불가"));
-        rooms.add(new Room(4, 4, 2, null, "2024-04-04", "예약가능"));
-        rooms.add(new Room(5, 4, 1, "2020-01-01", "2024-04-04", "예약불가"));
+        rooms.add(new Room(1, 4, 1, null, "2024-04-05", "예약가능"));
+        rooms.add(new Room(2, 4, 2, "2020-01-01", "2024-04-05", "예약불가"));
+        rooms.add(new Room(3, 4, 1, "2020-01-01", "2024-04-05", "예약불가"));
+        rooms.add(new Room(4, 4, 2, null, "2024-04-05", "예약가능"));
+        rooms.add(new Room(5, 4, 1, "2020-01-01", "2024-04-05", "예약불가"));
 
-        rooms.add(new Room(1, 5, 1, null, "2024-04-04", "예약가능"));
-        rooms.add(new Room(2, 5, 2, "2020-01-01", "2024-04-04", "예약불가"));
-        rooms.add(new Room(3, 5, 1, "2020-01-01", "2024-04-04", "예약불가"));
-        rooms.add(new Room(4, 5, 2, null, "2024-04-04", "예약가능"));
-        rooms.add(new Room(5, 5, 1, "2020-01-01", "2024-04-04", "예약불가"));
+        rooms.add(new Room(1, 5, 1, null, "2024-04-05", "예약가능"));
+        rooms.add(new Room(2, 5, 2, "2020-01-01", "2024-04-05", "예약불가"));
+        rooms.add(new Room(3, 5, 1, "2020-01-01", "2024-04-05", "예약불가"));
+        rooms.add(new Room(4, 5, 2, null, "2024-04-05", "예약가능"));
+        rooms.add(new Room(5, 5, 1, "2020-01-01", "2024-04-05", "예약불가"));
     }
 
     public void doAction(String cmd, String actionMethodName) {
@@ -74,6 +77,16 @@ public class BookingController extends Controller {
         int roomNum = sc.nextInt();
         sc.nextLine();
 
+        // 날짜 입력 및 7일간 날짜 판단
+        System.out.print("예약 날짜 입력) ");
+        String bookingDate = sc.nextLine();
+        bookingDate = bookingDate.trim();
+
+        if(Util.checkWeekDate(bookingDate) == false) {
+            System.out.println("오늘 날짜부터 7일간 조회 가능합니다.");
+            return;
+        }
+
         // 예약가능한 객실 가져오기
         Room bookingAbleRoom = getRoomsByNum(roomNum);
 
@@ -91,17 +104,27 @@ public class BookingController extends Controller {
             System.out.printf("*** %s호 객실의 타입은 [%s] ***\n", roomNum, bookingAbleRoom.type);
         }
 
-        // 날짜 입력 및 7일간 날짜 판단
-        System.out.print("예약 날짜 입력) ");
-        String bookingDate = sc.nextLine();
+        while(true) {
+            System.out.print("예약이 가능합니다. 예약을 진행할까요?) ");
+            String answer = sc.nextLine();
+            answer = answer.trim();
 
-        if(Util.checkWeekDate(bookingDate) == false) {
-            System.out.println("오늘 날짜부터 7일간 조회 가능합니다.");
-            return;
+            if(answer.equals("예")) {
+                // 로그인된 guest 정보 꺼내와서 booking 연결
+
+                System.out.println("%s님 예약 성공하셨습니다!!");
+                System.out.println("결제는 당일 카운터에서 진행 부탁드립니다!");
+                break;
+            }
+            else if(answer.equals("아니요")) {
+                System.out.println("예약을 중단합니다.");
+                break;
+            }
+            else {
+                System.out.println("\'예\' 또는 \'아니요\'를 입력해주세요");
+                continue;
+            }
         }
-
-        System.out.println("%s님 예약 성공하셨습니다!!");
-
     }
 
     public void doCheckBooking() {

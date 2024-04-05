@@ -11,7 +11,6 @@ public class GuestController extends Controller {
     private Scanner sc;
     private String cmd;
     private List<Guest> guests;
-    private Guest loginedGuest;
 
     public GuestController() {
         sc = new Scanner(System.in);
@@ -43,7 +42,7 @@ public class GuestController extends Controller {
 
     public void doJoin() {
         int id = guests.size() + 1;
-        String regDate = String.valueOf(Util.getTodayDate());
+        String regDate = Util.getTodayDate();
         String loginId = null;
         String loginPw = null;
         String loginPwConfirm = null;
@@ -93,11 +92,6 @@ public class GuestController extends Controller {
     }
 
     public void doLogin() {
-        if(isLogined()) {
-            System.out.println("이미 로그인 되어있습니다.");
-            return;
-        }
-
         System.out.print("ID : ");
         String loginId = sc.nextLine();
         System.out.print("PW : ");
@@ -121,20 +115,11 @@ public class GuestController extends Controller {
     }
 
     public void doLogout() {
-        if(isLogined() == false) {
-            System.out.println("로그인 상태가 아닙니다.");
-            return;
-        }
-
         loginedGuest = null;
         System.out.println("로그아웃 완료!!");
     }
 
-    private boolean isLogined() {
-        return loginedGuest != null;
-    }
-
-    private Guest getGuestByLoginId(String loginId) {
+    public Guest getGuestByLoginId(String loginId) {
         int index = getGuestIndexByLoginId(loginId);
 
         if(index == -1) {
@@ -144,7 +129,7 @@ public class GuestController extends Controller {
         return guests.get(index);
     }
 
-    private boolean isJoinableLoginId(String loginId) {
+    public boolean isJoinableLoginId(String loginId) {
         int index = getGuestIndexByLoginId(loginId);
 
         if(index == -1) {
@@ -154,7 +139,7 @@ public class GuestController extends Controller {
         return false;
     }
 
-    private int getGuestIndexByLoginId(String loginId) {
+    public int getGuestIndexByLoginId(String loginId) {
         int i = 0;
 
         for(Guest guest : guests) {
