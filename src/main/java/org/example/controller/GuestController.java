@@ -11,11 +11,17 @@ public class GuestController extends Controller {
     private Scanner sc;
     private String cmd;
     private List<Guest> guests;
+    private Guest loginedGuest;
 
     public GuestController() {
         sc = new Scanner(System.in);
         guests = new ArrayList<>();
     }
+
+    public void makeTestData() {
+        guests.add(new Guest(1, Util.getTodayDate(), "admin", "admin", "관리자", "admin@gmail.com", "010-1234-5678"));
+    }
+
     public void doAction(String cmd, String actionMethodName) {
         this.cmd = cmd;
         
@@ -87,15 +93,55 @@ public class GuestController extends Controller {
     }
 
     public void doLogin() {
+        if(isLogined()) {
+            System.out.println("이미 로그인 되어있습니다.");
+            return;
+        }
+
         System.out.print("ID : ");
         String loginId = sc.nextLine();
         System.out.print("PW : ");
         String loginPw = sc.nextLine();
 
+        Guest guest = getGuestByLoginId(loginId);
+
+        if(guest == null) {
+            System.out.println("입력하신 ID는 등록되지 않은 ID입니다.");
+            return;
+        }
+
+        if(guest.loginPw.equals(loginPw) == false) {
+            System.out.println("비밀번호를 잘못 입력하셨습니다.");
+            return;
+        }
+
+        loginedGuest = guest;
+        System.out.printf("로그인 완료!! %s님 환영합니다.\n", loginedGuest.name);
 
     }
 
     public void doLogout() {
+        if(isLogined() == false) {
+            System.out.println("로그인 상태가 아닙니다.");
+            return;
+        }
+
+        loginedGuest = null;
+        System.out.println("로그아웃 완료!!");
+    }
+
+    private boolean isLogined() {
+        return loginedGuest != null;
+    }
+
+    private Guest getGuestByLoginId(String loginId) {
+        int index = getGuestIndexByLoginId(loginId);
+
+        if(index == -1) {
+            return null;
+        }
+
+        return guests.get(index);
     }
 
     private boolean isJoinableLoginId(String loginId) {

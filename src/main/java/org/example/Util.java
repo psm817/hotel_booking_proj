@@ -1,20 +1,23 @@
 package org.example;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 
 public class Util {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public static LocalDate getTodayDate() {
+    public static String getTodayDate() {
         LocalDate now = LocalDate.now();
 
-        return now;
+        return now.format(formatter);
     }
 
     public static boolean checkWeekDate(String inputDate) {
-        LocalDate currentDate = getTodayDate();
+        String currentDateStr = getTodayDate();
+        LocalDate currentDate = LocalDate.parse(currentDateStr, formatter);
         LocalDate inputLocalDate;
 
         try {

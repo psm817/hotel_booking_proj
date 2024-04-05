@@ -31,6 +31,7 @@ public class App {
 
         roomController.makeTestData();
         bookingController.makeTestData();
+        guestController.makeTestData();
 
         while(true) {
             System.out.print("서비스를 입력해주세요) ");
