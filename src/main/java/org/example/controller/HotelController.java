@@ -9,6 +9,7 @@ public class HotelController extends Controller {
     public HotelController() {
         sc = new Scanner(System.in);
     }
+
     public void doAction(String cmd, String actionMethodName) {
         this.cmd = cmd;
 
@@ -37,6 +38,25 @@ public class HotelController extends Controller {
         System.out.println("** 부대시설 워터파크(2층)와 탁구장(6층)은 객실예약 시 이용 가능 **");
         System.out.println("===========================");
         System.out.printf("\n");
+
+        System.out.println("======== 객실 위치 ========");
+        System.out.println("*** 층별로 위치는 동일 ***");
+        System.out.println("━━━━━┓\n" +
+                "┓┓┓┓┓┃         ┎━━━━━━┒      ┎━━━━━━┒      ┎━━━━━━┒\n" +
+                "┓┓┓┓┓┃         ┃┏┓┏┓┏┓┃      ┃┏┓┏┓┏┓┃      ┃┏┓┏┓┏┓┃\n" +
+                "┓┓┓┓┓┃         ┃┏┓┏┓┏┓┃      ┃┗┛┗┛┗┛┃      ┃┗┛┗┛┗┛┃\n" +
+                "┓┓┓┓┓┃         ┃┏┓┏┓┏┓┃      ┃┏┓┏┓┏┓┃      ┃┏┓┏┓┏┓┃\n" +
+                "┓┓┓┓┓┃ 엘         1호           3호           5호\n" +
+                "┓┓┓┓┓┃ 리\n" +
+                "┓┓┓┓┓┃ 베\n" +
+                "┓┓┓┓┓┃ 이\n" +
+                "┓┓┓┓┓┃ 터          ┎━━━━━━━━━━┒    ┎━━━━━━━━━━┒\n" +
+                "┓┓┓┓┓┃ 　          ┃┏┓┏┓┏┓┏┓┏┓┃    ┃┏┓┏┓┏┓┏┓┏┓┃\n" +
+                "┓┓┓┓┓┃　           ┃┗┛┗┛┗┛┗┛┗┛┃    ┃┗┛┗┛┗┛┗┛┗┛┃\n" +
+                "┓┓┓┓┓┃　           ┃┏┓┏┓┏┓┏┓┏┓┃    ┃┏┓┏┓┏┓┏┓┏┓┃\n" +
+                "┓┓┓┓┓┃                 2호              4호");
+        System.out.println("===========================");
+
     }
 
 }

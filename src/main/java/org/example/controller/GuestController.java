@@ -17,7 +17,7 @@ public class GuestController extends Controller {
         guests = new ArrayList<>();
     }
 
-    public void makeTestData() {
+    public void makeTestGuest() {
         guests.add(new Guest(1, Util.getTodayDate(), "admin", "admin", "관리자", "admin@gmail.com", "010-1234-5678"));
     }
 

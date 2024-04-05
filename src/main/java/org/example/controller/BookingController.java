@@ -12,33 +12,12 @@ import java.util.Scanner;
 public class BookingController extends Controller {
     private Scanner sc;
     private String cmd;
-    private List<Room> rooms;
     private List<Booking> bookings;
+    public Room bookingAbleRoom;
 
     public BookingController() {
         sc = new Scanner(System.in);
-        rooms = new ArrayList<>();
         bookings = new ArrayList<>();
-    }
-
-    public void makeTestData() {
-        rooms.add(new Room(1, 3, 1, null, "2024-04-05", "예약가능"));
-        rooms.add(new Room(2, 3, 2, "2020-01-01", "2024-04-05", "예약불가"));
-        rooms.add(new Room(3, 3, 1, "2020-01-01", "2024-04-05", "예약불가"));
-        rooms.add(new Room(4, 3, 2, null, "2024-04-05", "예약가능"));
-        rooms.add(new Room(5, 3, 1, "2020-01-01", "2024-04-05", "예약가능"));
-
-        rooms.add(new Room(1, 4, 1, null, "2024-04-05", "예약가능"));
-        rooms.add(new Room(2, 4, 2, "2020-01-01", "2024-04-05", "예약불가"));
-        rooms.add(new Room(3, 4, 1, "2020-01-01", "2024-04-05", "예약불가"));
-        rooms.add(new Room(4, 4, 2, null, "2024-04-05", "예약가능"));
-        rooms.add(new Room(5, 4, 1, "2020-01-01", "2024-04-05", "예약불가"));
-
-        rooms.add(new Room(1, 5, 1, null, "2024-04-05", "예약가능"));
-        rooms.add(new Room(2, 5, 2, "2020-01-01", "2024-04-05", "예약불가"));
-        rooms.add(new Room(3, 5, 1, "2020-01-01", "2024-04-05", "예약불가"));
-        rooms.add(new Room(4, 5, 2, null, "2024-04-05", "예약가능"));
-        rooms.add(new Room(5, 5, 1, "2020-01-01", "2024-04-05", "예약불가"));
     }
 
     public void doAction(String cmd, String actionMethodName) {
@@ -88,7 +67,7 @@ public class BookingController extends Controller {
         }
 
         // 예약가능한 객실 가져오기
-        Room bookingAbleRoom = getRoomsByNum(roomNum);
+        bookingAbleRoom = getRoomsByNum(roomNum);
 
         // 객실이 없거나, 예약불가 처리
         if(bookingAbleRoom == null || bookingAbleRoom.booked.equals("예약불가")) {
@@ -104,27 +83,44 @@ public class BookingController extends Controller {
             System.out.printf("*** %s호 객실의 타입은 [%s] ***\n", roomNum, bookingAbleRoom.type);
         }
 
+        // 인원확인
+
+
+
+        Booking booking = null;
+
         while(true) {
+            int id = bookings.size() + 1;
             System.out.print("예약이 가능합니다. 예약을 진행할까요?) ");
             String answer = sc.nextLine();
             answer = answer.trim();
 
-            if(answer.equals("예")) {
-                // 로그인된 guest 정보 꺼내와서 booking 연결
+            if(answer.equals("yes")) {
+                // booking 배열 추가
+                booking = new Booking(id, bookingDate, loginedGuest.name, loginedGuest.phoneNum, bookingAbleRoom.type);
+                bookings.add(booking);
 
-                System.out.println("%s님 예약 성공하셨습니다!!");
+                // 로그인된 회원의 이름으로 예약 성공
+                System.out.printf("%s님 예약 성공하셨습니다!!\n", booking.guestName);
                 System.out.println("결제는 당일 카운터에서 진행 부탁드립니다!");
+
                 break;
             }
-            else if(answer.equals("아니요")) {
+
+            else if(answer.equals("no")) {
                 System.out.println("예약을 중단합니다.");
                 break;
             }
+
             else {
-                System.out.println("\'예\' 또는 \'아니요\'를 입력해주세요");
+                System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");
                 continue;
             }
         }
+
+        // room 상태를 예약불가로 변경
+        bookingAbleRoom.booked = "예약불가";
+        bookingAbleRoom.bookingDate = bookingDate;
     }
 
     public void doCheckBooking() {
@@ -139,7 +135,7 @@ public class BookingController extends Controller {
     public void doWriteReview() {
     }
 
-    private Room getRoomsByNum(int roomNum) {
+    public Room getRoomsByNum(int roomNum) {
         int index = getRoomsIndexByNum(roomNum);
 
         if(index != -1) {
@@ -149,7 +145,7 @@ public class BookingController extends Controller {
         return null;
     }
 
-    private int getRoomsIndexByNum(int roomNum) {
+    public int getRoomsIndexByNum(int roomNum) {
         int i = 0;
 
         for(Room room : rooms) {

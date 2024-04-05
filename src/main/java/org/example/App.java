@@ -15,9 +15,8 @@ public class App {
 
         Scanner sc = new Scanner(System.in);
 
-        roomController.makeTestData();
-        bookingController.makeTestData();
-        guestController.makeTestData();
+        Controller.makeTestData();
+        guestController.makeTestGuest();
 
         while(true) {
             System.out.print("서비스를 입력해주세요) ");
@@ -108,7 +107,7 @@ public class App {
         System.out.printf("\n");
         System.out.println("=============== 서비스 모음 ===============");
         System.out.println("1. 호텔 소개 : hotel introduce");
-        System.out.println("2. 객실 예약현황 : room list");
+        System.out.println("2. 객실 조회하기 : room list");
         System.out.println("3. 객실 예약하기 : booking room");        // id, roomId, floor, guestName, guestPhone, type, regDate
         System.out.println("4. 예약 확인하기 : booking check");
         System.out.println("5. 예약정보 수정 : booking modify");
