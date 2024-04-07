@@ -71,7 +71,6 @@ public class App {
             switch(actionName) {
                 case "booking/room" :
                 case "booking/check" :
-                case "booking/modify" :
                 case "booking/delete" :
                 case "guest/logout" :
                 case "booking/review" :
@@ -110,12 +109,11 @@ public class App {
         System.out.println("2. 객실 조회하기 : room list");
         System.out.println("3. 객실 예약하기 : booking room");        // id, roomId, floor, guestName, guestPhone, type, regDate
         System.out.println("4. 예약 확인하기 : booking check");
-        System.out.println("5. 예약정보 수정 : booking modify");
-        System.out.println("6. 예약 취소 : booking delete");
-        System.out.println("7. 로그인/로그아웃 : guest login/logout");
-        System.out.println("8. 회원 가입 : guest join");
-        System.out.println("9. 리뷰 남기기 : booking review");
-        System.out.println("10. 서비스 다시보기 : service");
+        System.out.println("5. 예약 취소 : booking delete");
+        System.out.println("6. 로그인/로그아웃 : guest login/logout");
+        System.out.println("7. 회원 가입 : guest join");
+        System.out.println("8. 리뷰 남기기 : booking review");
+        System.out.println("9. 서비스 다시보기 : service");
         System.out.println("===========================================");
         System.out.printf("\n");
     }

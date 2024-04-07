@@ -31,9 +31,6 @@ public class BookingController extends Controller {
             case "check" :
                 doCheckBooking();
                 break;
-            case "modify" :
-                doModifyBooking();
-                break;
             case "delete" :
                 doDeleteBooking();
                 break;
@@ -116,7 +113,7 @@ public class BookingController extends Controller {
 
             if(answer.equals("yes")) {
                 // booking 배열 추가
-                Booking booking = new Booking(id, roomNum, bookingDate, loginedGuest.name, loginedGuest.phoneNum, bookingAbleRoom.type);
+                Booking booking = new Booking(id, roomNum, bookingDate, loginedGuest.name, loginedGuest.phoneNum, bookingAbleRoom.type, (payment+(count*plusPay)));
                 bookings.add(booking);
 
                 // 로그인된 회원의 이름으로 예약 성공
@@ -152,7 +149,7 @@ public class BookingController extends Controller {
 
             while (true) {
                 if (answer.equals("yes")) {
-                    System.out.println("호수 | 객실타입 | 예약날짜");
+                    System.out.println("호수 | 객실타입 | 결제요금 | 예약날짜");
 
                     for (int i = 0; i < bookings.size(); i++) {
                         Booking bookedRoom = bookings.get(i);
@@ -161,8 +158,13 @@ public class BookingController extends Controller {
                             Room room = rooms.get(j);
                             int roomId = room.floor * 100 + room.id;
 
-                            if(bookedRoom.regDate.equals(room.bookingDate) && bookedRoom.roomId == roomId) {
-                                System.out.printf("%d  |     %4s | %s\n", bookedRoom.roomId, bookedRoom.roomType, bookedRoom.regDate);
+                            if(bookedRoom.regDate.equals(room.bookingDate) && bookedRoom.roomId == roomId && loginedGuest.name.equals(bookedRoom.guestName)) {
+                                if(roomId % 2 == 1) {
+                                    System.out.printf("%d  |     싱글 |  %,d | %s\n", bookedRoom.roomId, bookedRoom.bookingPay, bookedRoom.regDate);
+                                }
+                                else {
+                                    System.out.printf("%d  |     더블 |  %,d | %s\n", bookedRoom.roomId, bookedRoom.bookingPay, bookedRoom.regDate);
+                                }
                             }
                         }
                     }
@@ -178,9 +180,6 @@ public class BookingController extends Controller {
                 }
             }
         }
-    }
-
-    public void doModifyBooking() {
     }
 
     public void doDeleteBooking() {

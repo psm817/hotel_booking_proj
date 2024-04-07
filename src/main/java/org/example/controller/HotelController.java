@@ -35,7 +35,7 @@ public class HotelController extends Controller {
         System.out.println("객실 요금 : 싱글(150,000원) / 더블(250,000원) ");
         System.out.println("** 객실 예약은 1박 단위로 가능 **");
         System.out.println("** 인원 추가 시 20,000원 추가 **");
-        System.out.println("** 부대시설 워터파크(2층)와 탁구장(6층)은 객실예약 시 이용 가능 **");
+//        System.out.println("** 부대시설 워터파크(2층)와 탁구장(6층)은 객실예약 시 이용 가능 **");
         System.out.println("===========================");
         System.out.printf("\n");
 
