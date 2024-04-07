@@ -23,22 +23,22 @@ public abstract class Controller {
     public abstract void doAction(String cmd, String actionMethodName);
 
     public static void makeTestData() {
-        rooms.add(new Room(1, 3, 1, null, "2024-04-07", "예약가능"));
-        rooms.add(new Room(2, 3, 2, "2020-01-01", "2024-04-07", "예약불가"));
-        rooms.add(new Room(3, 3, 1, "2020-01-01", "2024-04-07", "예약불가"));
-        rooms.add(new Room(4, 3, 2, null, "2024-04-07", "예약가능"));
-        rooms.add(new Room(5, 3, 1, "2020-01-01", "2024-04-07", "예약가능"));
+        rooms.add(new Room(1, 3, 1, null, "2024-04-08", "예약가능"));
+        rooms.add(new Room(2, 3, 2, "2020-01-01", "2024-04-08", "예약불가"));
+        rooms.add(new Room(3, 3, 1, "2020-01-01", "2024-04-08", "예약불가"));
+        rooms.add(new Room(4, 3, 2, null, "2024-04-08", "예약가능"));
+        rooms.add(new Room(5, 3, 1, "2020-01-01", "2024-04-08", "예약가능"));
 
-        rooms.add(new Room(1, 4, 1, null, "2024-04-07", "예약가능"));
-        rooms.add(new Room(2, 4, 2, "2020-01-01", "2024-04-07", "예약불가"));
-        rooms.add(new Room(3, 4, 1, "2020-01-01", "2024-04-07", "예약불가"));
-        rooms.add(new Room(4, 4, 2, null, "2024-04-07", "예약가능"));
-        rooms.add(new Room(5, 4, 1, "2020-01-01", "2024-04-07", "예약불가"));
+        rooms.add(new Room(1, 4, 1, null, "2024-04-08", "예약가능"));
+        rooms.add(new Room(2, 4, 2, "2020-01-01", "2024-04-08", "예약불가"));
+        rooms.add(new Room(3, 4, 1, "2020-01-01", "2024-04-08", "예약불가"));
+        rooms.add(new Room(4, 4, 2, null, "2024-04-08", "예약가능"));
+        rooms.add(new Room(5, 4, 1, "2020-01-01", "2024-04-08", "예약불가"));
 
-        rooms.add(new Room(1, 5, 1, null, "2024-04-07", "예약가능"));
-        rooms.add(new Room(2, 5, 2, "2020-01-01", "2024-04-07", "예약불가"));
-        rooms.add(new Room(3, 5, 1, "2020-01-01", "2024-04-07", "예약불가"));
-        rooms.add(new Room(4, 5, 2, null, "2024-04-07", "예약가능"));
-        rooms.add(new Room(5, 5, 1, "2020-01-01", "2024-04-07", "예약불가"));
+        rooms.add(new Room(1, 5, 1, null, "2024-04-08", "예약가능"));
+        rooms.add(new Room(2, 5, 2, "2020-01-01", "2024-04-08", "예약불가"));
+        rooms.add(new Room(3, 5, 1, "2020-01-01", "2024-04-08", "예약불가"));
+        rooms.add(new Room(4, 5, 2, null, "2024-04-08", "예약가능"));
+        rooms.add(new Room(5, 5, 1, "2020-01-01", "2024-04-08", "예약불가"));
     }
 }

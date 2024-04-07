@@ -150,33 +150,29 @@ public class BookingController extends Controller {
             System.out.print("예약 상세보기를 진행 하시겠습니까?) ");
             String answer = sc.nextLine();
 
-            List<Room> forListRooms = rooms;
-
             while (true) {
                 if (answer.equals("yes")) {
                     System.out.println("호수 | 객실타입 | 예약날짜");
 
-                    for (int i = 0; i < foundBookingCount; i++) {
-                        // 룸 가져오는걸 0,1 번째가 아니라 전체에서 조회헤서 가져와야함.
-                        Room room = forListRooms.get(i);
-                        // 객실 숫자화
-                        int roomId = room.floor * 100 + room.id;
+                    for (int i = 0; i < bookings.size(); i++) {
+                        Booking bookedRoom = bookings.get(i);
 
-                        for(int j = 0; j < foundBookingCount; j++) {
-                            Booking bookedRoom = bookings.get(i);
+                        for(int j = 0; j < rooms.size(); j++) {
+                            Room room = rooms.get(j);
+                            int roomId = room.floor * 100 + room.id;
 
-                            if (room.bookingDate.equals(bookedRoom.regDate) && roomId == bookedRoom.roomId) {
-                                System.out.printf("%d  | %s   |   %s\n", bookedRoom.roomId, bookedRoom.roomType, bookedRoom.regDate);
-
+                            if(bookedRoom.regDate.equals(room.bookingDate) && bookedRoom.roomId == roomId) {
+                                System.out.printf("%d  |     %4s | %s\n", bookedRoom.roomId, bookedRoom.roomType, bookedRoom.regDate);
                             }
                         }
                     }
-
                     break;
-                } else if (answer.equals("no")) {
+                }
+                else if (answer.equals("no")) {
                     System.out.println("상세보기를 건너뜁니다.");
                     break;
-                } else {
+                }
+                else {
                     System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");
                     continue;
                 }
