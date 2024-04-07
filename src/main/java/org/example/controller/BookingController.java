@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class BookingController extends Controller {
     private Scanner sc;
     private String cmd;
-    private List<Booking> bookings;
+    public static List<Booking> bookings;
     public Room bookingAbleRoom;
 
     public BookingController() {
@@ -108,8 +108,6 @@ public class BookingController extends Controller {
             }
         }
 
-        Booking booking = null;
-
         while(true) {
             int id = bookings.size() + 1;
             System.out.print("예약을 진행할까요?) ");
@@ -118,12 +116,12 @@ public class BookingController extends Controller {
 
             if(answer.equals("yes")) {
                 // booking 배열 추가
-                booking = new Booking(id, bookingDate, loginedGuest.name, loginedGuest.phoneNum, bookingAbleRoom.type);
+                Booking booking = new Booking(id, roomNum, bookingDate, loginedGuest.name, loginedGuest.phoneNum, bookingAbleRoom.type);
                 bookings.add(booking);
 
                 // 로그인된 회원의 이름으로 예약 성공
                 System.out.printf("%s님 예약 성공하셨습니다!!\n", booking.guestName);
-                System.out.printf("총 금액은 %d입니다. 결제는 당일 카운터에서 진행 부탁드립니다!\n", (payment+(count*plusPay)));
+                System.out.printf("총 금액은 %,d입니다. 결제는 당일 카운터에서 진행 부탁드립니다!\n", (payment+(count*plusPay)));
 
                 // room 상태를 예약불가로 변경
                 bookingAbleRoom.booked = "예약불가";
@@ -145,6 +143,45 @@ public class BookingController extends Controller {
     }
 
     public void doCheckBooking() {
+        int foundBookingCount = getBookingsByName(loginedGuest.name);
+        System.out.printf("%s 님, [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
+
+        if (foundBookingCount >= 1) {
+            System.out.print("예약 상세보기를 진행 하시겠습니까?) ");
+            String answer = sc.nextLine();
+
+            List<Room> forListRooms = rooms;
+
+            while (true) {
+                if (answer.equals("yes")) {
+                    System.out.println("호수 | 객실타입 | 예약날짜");
+
+                    for (int i = 0; i < foundBookingCount; i++) {
+                        // 룸 가져오는걸 0,1 번째가 아니라 전체에서 조회헤서 가져와야함.
+                        Room room = forListRooms.get(i);
+                        // 객실 숫자화
+                        int roomId = room.floor * 100 + room.id;
+
+                        for(int j = 0; j < foundBookingCount; j++) {
+                            Booking bookedRoom = bookings.get(i);
+
+                            if (room.bookingDate.equals(bookedRoom.regDate) && roomId == bookedRoom.roomId) {
+                                System.out.printf("%d  | %s   |   %s\n", bookedRoom.roomId, bookedRoom.roomType, bookedRoom.regDate);
+
+                            }
+                        }
+                    }
+
+                    break;
+                } else if (answer.equals("no")) {
+                    System.out.println("상세보기를 건너뜁니다.");
+                    break;
+                } else {
+                    System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");
+                    continue;
+                }
+            }
+        }
     }
 
     public void doModifyBooking() {
@@ -177,5 +214,30 @@ public class BookingController extends Controller {
         }
 
         return -1;
+    }
+
+    private int getBookingsByName(String name) {
+        int sum = 0;
+
+        for(Booking booking : bookings) {
+            if(booking.guestName.equals(name)) {
+                sum++;
+            }
+        }
+
+        return sum;
+    }
+
+    private Booking foundBookedRoomByName(String name) {
+        int i = 0;
+
+        for(Booking booking : bookings) {
+            if(booking.guestName.equals(name)) {
+                return bookings.get(i);
+            }
+            i++;
+        }
+
+        return null;
     }
 }
