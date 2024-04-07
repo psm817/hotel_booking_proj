@@ -125,6 +125,10 @@ public class BookingController extends Controller {
                 System.out.printf("%s님 예약 성공하셨습니다!!\n", booking.guestName);
                 System.out.printf("총 금액은 %d입니다. 결제는 당일 카운터에서 진행 부탁드립니다!\n", (payment+(count*plusPay)));
 
+                // room 상태를 예약불가로 변경
+                bookingAbleRoom.booked = "예약불가";
+                bookingAbleRoom.bookingDate = bookingDate;
+
                 break;
             }
 
@@ -138,10 +142,6 @@ public class BookingController extends Controller {
                 continue;
             }
         }
-
-        // room 상태를 예약불가로 변경
-        bookingAbleRoom.booked = "예약불가";
-        bookingAbleRoom.bookingDate = bookingDate;
     }
 
     public void doCheckBooking() {

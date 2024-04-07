@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class GuestController extends Controller {
     private Scanner sc;
     private String cmd;
-    private List<Guest> guests;
+    public static List<Guest> guests;
 
     public GuestController() {
         sc = new Scanner(System.in);

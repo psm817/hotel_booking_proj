@@ -84,8 +84,8 @@ public class App {
 
             // 로그아웃을 요구하는 서비스
             switch(actionName) {
-                case "guest join" :
-                case "guest login" :
+                case "guest/join" :
+                case "guest/login" :
                     if(Controller.isLogined()) {
                         System.out.println("로그아웃 후 이용가능합니다.");
                         continue;
