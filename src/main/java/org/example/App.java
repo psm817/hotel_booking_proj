@@ -106,7 +106,7 @@ public class App {
         System.out.printf("오늘 날짜 : %s", Util.getTodayDate());
         System.out.printf("\n");
         System.out.println("=============== 서비스 모음 ===============");
-        System.out.println("1. 호텔 소개 : hotel introduce");
+        System.out.println("1. 호텔 소개 : hotel introduce (필독바람!!)");
         System.out.println("2. 객실 조회하기 : room list");
         System.out.println("3. 객실 예약하기 : booking room");        // id, roomId, floor, guestName, guestPhone, type, regDate
         System.out.println("4. 예약 확인하기 : booking check");

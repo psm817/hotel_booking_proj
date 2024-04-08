@@ -1,25 +1,24 @@
 package org.example.controller;
 
 import org.example.Container;
-import org.example.util.Util;
 import org.example.dto.Booking;
 import org.example.dto.Room;
+import org.example.service.BookingService;
+import org.example.util.Util;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class BookingController extends Controller {
     private Scanner sc;
     private String cmd;
-    private List<Booking> bookings;
-    public Room bookingAbleRoom;
     private List<Room> rooms;
+    private BookingService bookingService;
 
     public BookingController() {
         sc = new Scanner(System.in);
         rooms = Container.roomDao.rooms;
-        bookings = Container.bookingDao.bookings;
+        bookingService = Container.bookingService;
     }
 
     public void doAction(String cmd, String actionMethodName) {
@@ -67,7 +66,7 @@ public class BookingController extends Controller {
         }
 
         // 예약가능한 객실 가져오기
-        bookingAbleRoom = getRoomsByNum(roomNum);
+        Room bookingAbleRoom = bookingService.getRoomsByNum(roomNum);
 
         // 객실이 없거나, 예약불가 처리
         if(bookingAbleRoom == null || bookingAbleRoom.booked.equals("예약불가")) {
@@ -82,7 +81,6 @@ public class BookingController extends Controller {
 
         // 객실 타입 안내
         if(roomNum % 2 == 1) {
-//            System.out.printf("*** %d호 객실의 타입은 [%d] ***\n", roomNum, bookingAbleRoom.type);
             System.out.print("인원은 몇 명 이신가요?) ");
             int peopleNum = sc.nextInt();
             sc.nextLine();
@@ -107,7 +105,7 @@ public class BookingController extends Controller {
         }
 
         while(true) {
-            int id = bookings.size() + 1;
+            int id = Container.bookingDao.getNewId();
             System.out.printf("총 금액은 [%,d원] 입니다.\n", (payment+(count*plusPay)));
             System.out.print("예약을 진행할까요?) ");
             String answer = sc.nextLine();
@@ -116,7 +114,7 @@ public class BookingController extends Controller {
             if(answer.equals("yes")) {
                 // booking 배열 추가
                 Booking booking = new Booking(id, roomNum, bookingDate, loginedGuest.name, loginedGuest.phoneNum, bookingAbleRoom.type, (payment+(count*plusPay)));
-                bookings.add(booking);
+                Container.bookingDao.add(booking);
 
                 // 로그인된 회원의 이름으로 예약 성공
                 System.out.printf("[%s]님 예약 성공하셨습니다!! 결제는 당일 카운터에서 진행 부탁드립니다!\n", booking.guestName);
@@ -140,7 +138,7 @@ public class BookingController extends Controller {
     }
 
     public void doCheckBooking() {
-        int foundBookingCount = getBookingsByName(loginedGuest.name);
+        int foundBookingCount = bookingService.getBookingsByName(loginedGuest.name);
         System.out.printf("%s 님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
 
         if (foundBookingCount >= 1) {
@@ -152,21 +150,18 @@ public class BookingController extends Controller {
                     System.out.printf("==== [%s 님] 예약 현황 =======\n", loginedGuest.name);
                     System.out.println("호수 | 객실타입 | 결제요금 | 예약날짜");
 
-                    for (int i = 0; i < bookings.size(); i++) {
-                        Booking bookedAllRoom = bookings.get(i);
+                    // 로그인된 회원이 예약한 목록 가져오기
+                    List<Booking> forPrintBookings = bookingService.getForPrintBookings();
 
-                        for(int j = 0; j < rooms.size(); j++) {
-                            Room foundAllRoom = rooms.get(j);
-                            int roomId = foundAllRoom.floor * 100 + foundAllRoom.id;
+                    // 예약한 목록 출력
+                    for(int i = 0; i < forPrintBookings.size(); i++) {
+                        Booking bookingByGuest = forPrintBookings.get(i);
 
-                            if(bookedAllRoom.regDate.equals(foundAllRoom.bookingDate) && bookedAllRoom.roomId == roomId && loginedGuest.name.equals(bookedAllRoom.guestName)) {
-                                if(roomId % 2 == 1) {
-                                    System.out.printf("%d  |     싱글 |  %,d | %s\n", bookedAllRoom.roomId, bookedAllRoom.bookingPay, bookedAllRoom.regDate);
-                                }
-                                else {
-                                    System.out.printf("%d  |     더블 |  %,d | %s\n", bookedAllRoom.roomId, bookedAllRoom.bookingPay, bookedAllRoom.regDate);
-                                }
-                            }
+                        if(bookingByGuest.roomId % 2 == 1) {
+                            System.out.printf("%d  |     싱글 |  %,d | %s\n", bookingByGuest.roomId, bookingByGuest.bookingPay, bookingByGuest.regDate);
+                        }
+                        else {
+                            System.out.printf("%d  |     더블 |  %,d | %s\n", bookingByGuest.roomId, bookingByGuest.bookingPay, bookingByGuest.regDate);
                         }
                     }
 
@@ -186,7 +181,7 @@ public class BookingController extends Controller {
     }
 
     public void doDeleteBooking() {
-        int foundBookingCount = getBookingsByName(loginedGuest.name);
+        int foundBookingCount = bookingService.getBookingsByName(loginedGuest.name);
         System.out.printf("%s 님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
 
         if(foundBookingCount == 0) {
@@ -196,17 +191,13 @@ public class BookingController extends Controller {
             System.out.printf("==== [%s 님] 예약 현황 =======\n", loginedGuest.name);
             System.out.println("예약번호 | 호수 | 예약날짜");
 
-            for (int i = 0; i < bookings.size(); i++) {
-                Booking bookedAllRoom = bookings.get(i);
+            List<Booking> forPrintBookings = bookingService.getForPrintBookings();
 
-                for(int j = 0; j < rooms.size(); j++) {
-                    Room foundAllRoom = rooms.get(j);
-                    int roomId = foundAllRoom.floor * 100 + foundAllRoom.id;
+            // 예약한 목록 출력
+            for(int i = 0; i < forPrintBookings.size(); i++) {
+                Booking bookingByGuest = forPrintBookings.get(i);
 
-                    if(bookedAllRoom.regDate.equals(foundAllRoom.bookingDate) && bookedAllRoom.roomId == roomId && loginedGuest.name.equals(bookedAllRoom.guestName)) {
-                        System.out.printf("    %4d |  %d | %s\n", bookedAllRoom.id, bookedAllRoom.roomId, bookedAllRoom.regDate);
-                    }
-                }
+                System.out.printf("    %4d |  %d | %s\n", bookingByGuest.id, bookingByGuest.roomId, bookingByGuest.regDate);
             }
 
             System.out.println("====================================");
@@ -218,8 +209,8 @@ public class BookingController extends Controller {
                 int answerId = sc.nextInt();
                 sc.nextLine();
 
-                for(int i = 0; i < bookings.size(); i++) {
-                    Booking bookedAllRoom = bookings.get(i);
+                for(int i = 0; i < Container.bookingDao.bookings.size(); i++) {
+                    Booking bookedAllRoom = Container.bookingDao.bookings.get(i);
 
                     for(int j = 0; j < rooms.size(); j++) {
                         Room foundAllRoom = rooms.get(j);
@@ -227,7 +218,7 @@ public class BookingController extends Controller {
 
                         if(bookedAllRoom.regDate.equals(foundAllRoom.bookingDate) && bookedAllRoom.roomId == roomId && loginedGuest.name.equals(bookedAllRoom.guestName)) {
                             if(bookedAllRoom.id == answerId) {
-                                bookings.remove(bookedAllRoom);
+                                Container.bookingDao.bookings.remove(bookedAllRoom);
                                 foundAllRoom.bookingDate = null;
                                 foundAllRoom.booked = "예약가능";
 
@@ -247,40 +238,5 @@ public class BookingController extends Controller {
     }
 
     public void doWriteReview() {
-    }
-
-    public Room getRoomsByNum(int roomNum) {
-        int index = getRoomsIndexByNum(roomNum);
-
-        if(index != -1) {
-            return rooms.get(index);
-        }
-
-        return null;
-    }
-
-    public int getRoomsIndexByNum(int roomNum) {
-        int i = 0;
-
-        for(Room room : rooms) {
-            if((room.floor * 100 + room.id) == roomNum) {
-                return i;
-            }
-            i++;
-        }
-
-        return -1;
-    }
-
-    private int getBookingsByName(String name) {
-        int sum = 0;
-
-        for(Booking booking : bookings) {
-            if(booking.guestName.equals(name)) {
-                sum++;
-            }
-        }
-
-        return sum;
     }
 }

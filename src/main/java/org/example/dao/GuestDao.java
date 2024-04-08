@@ -5,7 +5,7 @@ import org.example.dto.Guest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuestDao {
+public class GuestDao extends Dao {
     public List<Guest> guests;
 
     public GuestDao() {
