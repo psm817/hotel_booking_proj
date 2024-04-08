@@ -114,7 +114,7 @@ public class BookingController extends Controller {
             if(answer.equals("yes")) {
                 // booking 배열 추가
                 Booking booking = new Booking(id, roomNum, bookingDate, loginedGuest.name, loginedGuest.phoneNum, bookingAbleRoom.type, (payment+(count*plusPay)));
-                Container.bookingDao.add(booking);
+                bookingService.add(booking);
 
                 // 로그인된 회원의 이름으로 예약 성공
                 System.out.printf("[%s]님 예약 성공하셨습니다!! 결제는 당일 카운터에서 진행 부탁드립니다!\n", booking.guestName);

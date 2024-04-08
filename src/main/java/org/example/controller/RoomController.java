@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.Container;
+import org.example.service.RoomService;
 import org.example.util.Util;
 import org.example.dto.Room;
 
@@ -10,31 +11,31 @@ import java.util.Scanner;
 public class RoomController extends Controller {
     private Scanner sc;
     private String cmd;
-    private List<Room> rooms;
+    private RoomService roomService;
 
     public RoomController() {
         sc = new Scanner(System.in);
-        rooms = Container.roomDao.rooms;
+        roomService = Container.roomService;
     }
 
     public void makeTestData() {
-        rooms.add(new Room(1, 3, 1, null, "2024-04-08", "예약가능"));
-        rooms.add(new Room(2, 3, 2, "2020-01-01", "2024-04-08", "예약가능"));
-        rooms.add(new Room(3, 3, 1, "2020-01-01", "2024-04-08", "예약가능"));
-        rooms.add(new Room(4, 3, 2, null, "2024-04-08", "예약가능"));
-        rooms.add(new Room(5, 3, 1, "2020-01-01", "2024-04-08", "예약불가"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 1, 3, 1, null, "2024-04-08", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 2, 3, 2, null, "2024-04-08", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 3, 3, 1, null, "2024-04-08", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 4, 3, 2, null, "2024-04-08", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 5, 3, 1, "2020-01-01", "2024-04-08", "예약불가"));
 
-        rooms.add(new Room(1, 4, 1, null, "2024-04-08", "예약가능"));
-        rooms.add(new Room(2, 4, 2, "2020-01-01", "2024-04-08", "예약가능"));
-        rooms.add(new Room(3, 4, 1, "2020-01-01", "2024-04-08", "예약가능"));
-        rooms.add(new Room(4, 4, 2, null, "2024-04-08", "예약가능"));
-        rooms.add(new Room(5, 4, 1, "2020-01-01", "2024-04-08", "예약불가"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 1, 4, 1, null, "2024-04-08", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 2, 4, 2, null, "2024-04-08", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 3, 4, 1, null, "2024-04-08", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 4, 4, 2, null, "2024-04-08", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 5, 4, 1, "2020-01-01", "2024-04-08", "예약불가"));
 
-        rooms.add(new Room(1, 5, 1, null, "2024-04-08", "예약가능"));
-        rooms.add(new Room(2, 5, 2, "2020-01-01", "2024-04-08", "예약가능"));
-        rooms.add(new Room(3, 5, 1, "2020-01-01", "2024-04-08", "예약가능"));
-        rooms.add(new Room(4, 5, 2, null, "2024-04-08", "예약가능"));
-        rooms.add(new Room(5, 5, 1, "2020-01-01", "2024-04-08", "예약불가"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 1, 5, 1, null, "2024-04-08", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 2, 5, 2, null, "2024-04-08", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 3, 5, 1, null, "2024-04-08", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 4, 5, 2, null, "2024-04-08", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 5, 5, 1, "2020-01-01", "2024-04-08", "예약불가"));
     }
 
     public void doAction(String cmd, String actionMethodName) {
@@ -65,78 +66,36 @@ public class RoomController extends Controller {
             return;
         }
 
-        System.out.print("층 수를 입력해주세요) ");
-        String floor = sc.nextLine();
+        System.out.print("층 수를 입력(숫자만) : ");
+        int floor = sc.nextInt();
+        sc.nextLine();
 
-        List<Room> forListRooms = rooms;
-
-        if(floor.equals("3")) {
-            System.out.printf("==== [%s] 3층 객실 현황 ====\n", checkDate);
-            System.out.println("호수 | 객실타입 | 상태");
-
-            for(int i = 0; i < forListRooms.size(); i++) {
-                Room room = forListRooms.get(i);
-
-                if(room.dayOfSelect.equals(checkDate)) {
-                    if(room.floor == 3) {
-                        System.out.printf("30%d  | %8s | %s\n", room.id, room.type, room.booked);
-                    }
-                }
-
-                else {
-                    System.out.println("조회된 객실이 없습니다.");
-                    return;
-                }
-            }
-
-            System.out.println("====================================");
-        }
-
-        else if(floor.equals("4")) {
-            System.out.printf("==== [%s] 4층 객실 현황 ====\n", checkDate);
-            System.out.println("호수 | 객실타입 | 상태");
-
-            for(int i = 0; i < forListRooms.size(); i++) {
-                Room room = forListRooms.get(i);
-
-                if(room.dayOfSelect.equals(checkDate)) {
-                    if(room.floor == 4) {
-                        System.out.printf("40%d  | %8s | %s\n", room.id, room.type, room.booked);
-                    }
-                }
-
-                else {
-                    System.out.println("조회된 객실이 없습니다.");
-                    return;
-                }
-            }
-
-            System.out.println("====================================");
-        }
-
-        else if(floor.equals("5")) {
-            System.out.printf("==== [%s] 5층 객실 현황 ====\n", checkDate);
-            System.out.println("호수 | 객실타입 | 상태");
-
-            for(int i = 0; i < forListRooms.size(); i++) {
-                Room room = forListRooms.get(i);
-
-                if(room.dayOfSelect.equals(checkDate)) {
-                    if(room.floor == 5) {
-                        System.out.printf("50%d  | %8s | %s\n", room.id, room.type, room.booked);
-                    }
-                }
-
-                else {
-                    System.out.println("조회된 객실이 없습니다.");
-                    return;
-                }
-            }
-
-            System.out.println("====================================");
+        if(floor > 5 || floor < 3) {
+            System.out.println("층 수를 잘못 입력하셨습니다.");
+            System.out.println("3, 4, 5층 중 하나를 입력해주세요.");
         }
         else {
-            System.out.println("층 수를 잘못 입력하셨습니다.");
+            List<Room> forListRooms = Container.roomDao.rooms;
+
+            System.out.printf("==== [%s] %d층 객실 현황 ====\n", checkDate, floor);
+            System.out.println("호수 | 객실타입 | 상태");
+
+            for(int i = 0; i < forListRooms.size(); i++) {
+                Room room = forListRooms.get(i);
+
+                if(room.dayOfSelect.equals(checkDate)) {
+                    if(room.floor == floor) {
+                        System.out.printf("%d  | %8s | %s\n", (room.floor * 100 +room.roomNum), room.type, room.booked);
+                    }
+                }
+
+                else {
+                    System.out.println("조회된 객실이 없습니다.");
+                    return;
+                }
+            }
+
+            System.out.println("====================================");
         }
     }
 }

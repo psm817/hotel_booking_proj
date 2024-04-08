@@ -11,4 +11,9 @@ public class RoomDao extends Dao {
     public RoomDao() {
         rooms = new ArrayList<>();
     }
+
+    public void add(Room room) {
+        rooms.add(room);
+        lastId++;
+    }
 }

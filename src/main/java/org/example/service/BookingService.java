@@ -29,4 +29,8 @@ public class BookingService {
     public List<Booking> getForPrintBookings() {
         return bookingDao.getForPrintBookings();
     }
+
+    public void add(Booking booking) {
+        bookingDao.add(booking);
+    }
 }
