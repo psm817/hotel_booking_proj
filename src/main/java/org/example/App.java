@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.controller.*;
+import org.example.util.Util;
 
 import java.util.Scanner;
 
@@ -15,7 +16,7 @@ public class App {
 
         Scanner sc = new Scanner(System.in);
 
-        Controller.makeTestData();
+        roomController.makeTestData();
         guestController.makeTestGuest();
 
         while(true) {

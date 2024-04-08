@@ -1,6 +1,7 @@
 package org.example.controller;
 
-import org.example.Util;
+import org.example.Container;
+import org.example.util.Util;
 import org.example.dto.Booking;
 import org.example.dto.Room;
 
@@ -11,12 +12,14 @@ import java.util.Scanner;
 public class BookingController extends Controller {
     private Scanner sc;
     private String cmd;
-    public static List<Booking> bookings;
+    private List<Booking> bookings;
     public Room bookingAbleRoom;
+    private List<Room> rooms;
 
     public BookingController() {
         sc = new Scanner(System.in);
-        bookings = new ArrayList<>();
+        rooms = Container.roomDao.rooms;
+        bookings = Container.bookingDao.bookings;
     }
 
     public void doAction(String cmd, String actionMethodName) {
@@ -166,6 +169,7 @@ public class BookingController extends Controller {
                             }
                         }
                     }
+
                     System.out.println("====================================");
                     break;
                 }

@@ -1,6 +1,7 @@
 package org.example.controller;
 
-import org.example.Util;
+import org.example.Container;
+import org.example.util.Util;
 import org.example.dto.Room;
 
 import java.util.List;
@@ -9,9 +10,31 @@ import java.util.Scanner;
 public class RoomController extends Controller {
     private Scanner sc;
     private String cmd;
+    private List<Room> rooms;
 
     public RoomController() {
         sc = new Scanner(System.in);
+        rooms = Container.roomDao.rooms;
+    }
+
+    public void makeTestData() {
+        rooms.add(new Room(1, 3, 1, null, "2024-04-08", "예약가능"));
+        rooms.add(new Room(2, 3, 2, "2020-01-01", "2024-04-08", "예약불가"));
+        rooms.add(new Room(3, 3, 1, "2020-01-01", "2024-04-08", "예약불가"));
+        rooms.add(new Room(4, 3, 2, null, "2024-04-08", "예약가능"));
+        rooms.add(new Room(5, 3, 1, "2020-01-01", "2024-04-08", "예약가능"));
+
+        rooms.add(new Room(1, 4, 1, null, "2024-04-08", "예약가능"));
+        rooms.add(new Room(2, 4, 2, "2020-01-01", "2024-04-08", "예약불가"));
+        rooms.add(new Room(3, 4, 1, "2020-01-01", "2024-04-08", "예약불가"));
+        rooms.add(new Room(4, 4, 2, null, "2024-04-08", "예약가능"));
+        rooms.add(new Room(5, 4, 1, "2020-01-01", "2024-04-08", "예약불가"));
+
+        rooms.add(new Room(1, 5, 1, null, "2024-04-08", "예약가능"));
+        rooms.add(new Room(2, 5, 2, "2020-01-01", "2024-04-08", "예약불가"));
+        rooms.add(new Room(3, 5, 1, "2020-01-01", "2024-04-08", "예약불가"));
+        rooms.add(new Room(4, 5, 2, null, "2024-04-08", "예약가능"));
+        rooms.add(new Room(5, 5, 1, "2020-01-01", "2024-04-08", "예약불가"));
     }
 
     public void doAction(String cmd, String actionMethodName) {

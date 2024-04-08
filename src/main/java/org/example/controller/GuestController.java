@@ -1,7 +1,8 @@
 package org.example.controller;
 
-import org.example.Util;
+import org.example.util.Util;
 import org.example.dto.Guest;
+import org.example.Container;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +11,11 @@ import java.util.Scanner;
 public class GuestController extends Controller {
     private Scanner sc;
     private String cmd;
-    public static List<Guest> guests;
+    private List<Guest> guests;
 
     public GuestController() {
         sc = new Scanner(System.in);
-        guests = new ArrayList<>();
+        guests = Container.guestDao.guests;
     }
 
     public void makeTestGuest() {
