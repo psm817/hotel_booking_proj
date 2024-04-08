@@ -19,6 +19,8 @@ public class GuestController extends Controller {
 
     public void makeTestGuest() {
         guests.add(new Guest(1, Util.getTodayDate(), "admin", "admin", "관리자", "admin@gmail.com", "010-1234-5678"));
+        guests.add(new Guest(2, Util.getTodayDate(), "user1", "user1", "홍길동", "user1@gmail.com", "010-1234-5678"));
+        guests.add(new Guest(3, Util.getTodayDate(), "user2", "user2", "임꺽정", "user2@gmail.com", "010-1234-5678"));
     }
 
     public void doAction(String cmd, String actionMethodName) {

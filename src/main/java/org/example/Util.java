@@ -23,7 +23,7 @@ public class Util {
         try {
             inputLocalDate = LocalDate.parse(inputDate);
         } catch (DateTimeParseException e) {
-            System.out.println("날짜 형식이 잘못 입력되었습니다. \\'yyyy-dd-mm\\' 형태로 입력해주세요.");
+            System.out.println("날짜 형식이 잘못 입력되었습니다. \'yyyy-dd-mm\' 형태로 입력해주세요.");
             return false;
         }
 

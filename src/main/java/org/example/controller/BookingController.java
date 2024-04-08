@@ -2,11 +2,9 @@ package org.example.controller;
 
 import org.example.Util;
 import org.example.dto.Booking;
-import org.example.dto.Guest;
 import org.example.dto.Room;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -70,7 +68,7 @@ public class BookingController extends Controller {
 
         // 객실이 없거나, 예약불가 처리
         if(bookingAbleRoom == null || bookingAbleRoom.booked.equals("예약불가")) {
-            System.out.println("예약이 불가능한 객실입니다.");
+            System.out.println("예약이 이미 완료되었거나, 존재하지 않는 객실입니다.");
             return;
         }
 
@@ -107,6 +105,7 @@ public class BookingController extends Controller {
 
         while(true) {
             int id = bookings.size() + 1;
+            System.out.printf("총 금액은 [%,d원] 입니다.\n", (payment+(count*plusPay)));
             System.out.print("예약을 진행할까요?) ");
             String answer = sc.nextLine();
             answer = answer.trim();
@@ -117,8 +116,7 @@ public class BookingController extends Controller {
                 bookings.add(booking);
 
                 // 로그인된 회원의 이름으로 예약 성공
-                System.out.printf("%s님 예약 성공하셨습니다!!\n", booking.guestName);
-                System.out.printf("총 금액은 %,d입니다. 결제는 당일 카운터에서 진행 부탁드립니다!\n", (payment+(count*plusPay)));
+                System.out.printf("[%s]님 예약 성공하셨습니다!! 결제는 당일 카운터에서 진행 부탁드립니다!\n", booking.guestName);
 
                 // room 상태를 예약불가로 변경
                 bookingAbleRoom.booked = "예약불가";
@@ -134,14 +132,13 @@ public class BookingController extends Controller {
 
             else {
                 System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");
-                continue;
             }
         }
     }
 
     public void doCheckBooking() {
         int foundBookingCount = getBookingsByName(loginedGuest.name);
-        System.out.printf("%s 님, [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
+        System.out.printf("%s 님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
 
         if (foundBookingCount >= 1) {
             System.out.print("예약 상세보기를 진행 하시겠습니까?) ");
@@ -149,25 +146,27 @@ public class BookingController extends Controller {
 
             while (true) {
                 if (answer.equals("yes")) {
+                    System.out.printf("==== [%s 님] 예약 현황 =======\n", loginedGuest.name);
                     System.out.println("호수 | 객실타입 | 결제요금 | 예약날짜");
 
                     for (int i = 0; i < bookings.size(); i++) {
-                        Booking bookedRoom = bookings.get(i);
+                        Booking bookedAllRoom = bookings.get(i);
 
                         for(int j = 0; j < rooms.size(); j++) {
-                            Room room = rooms.get(j);
-                            int roomId = room.floor * 100 + room.id;
+                            Room foundAllRoom = rooms.get(j);
+                            int roomId = foundAllRoom.floor * 100 + foundAllRoom.id;
 
-                            if(bookedRoom.regDate.equals(room.bookingDate) && bookedRoom.roomId == roomId && loginedGuest.name.equals(bookedRoom.guestName)) {
+                            if(bookedAllRoom.regDate.equals(foundAllRoom.bookingDate) && bookedAllRoom.roomId == roomId && loginedGuest.name.equals(bookedAllRoom.guestName)) {
                                 if(roomId % 2 == 1) {
-                                    System.out.printf("%d  |     싱글 |  %,d | %s\n", bookedRoom.roomId, bookedRoom.bookingPay, bookedRoom.regDate);
+                                    System.out.printf("%d  |     싱글 |  %,d | %s\n", bookedAllRoom.roomId, bookedAllRoom.bookingPay, bookedAllRoom.regDate);
                                 }
                                 else {
-                                    System.out.printf("%d  |     더블 |  %,d | %s\n", bookedRoom.roomId, bookedRoom.bookingPay, bookedRoom.regDate);
+                                    System.out.printf("%d  |     더블 |  %,d | %s\n", bookedAllRoom.roomId, bookedAllRoom.bookingPay, bookedAllRoom.regDate);
                                 }
                             }
                         }
                     }
+                    System.out.println("====================================");
                     break;
                 }
                 else if (answer.equals("no")) {
@@ -176,13 +175,62 @@ public class BookingController extends Controller {
                 }
                 else {
                     System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");
-                    continue;
+                    return;
                 }
             }
         }
     }
 
     public void doDeleteBooking() {
+        int foundBookingCount = getBookingsByName(loginedGuest.name);
+        System.out.printf("%s 님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
+
+        if(foundBookingCount == 0) {
+            System.out.println("취소하실 예약 건이 없습니다.");
+        }
+        else {
+            System.out.printf("==== [%s 님] 예약 현황 =======\n", loginedGuest.name);
+            System.out.println("예약번호 | 호수 | 예약날짜");
+
+            for (int i = 0; i < bookings.size(); i++) {
+                Booking bookedAllRoom = bookings.get(i);
+
+                for(int j = 0; j < rooms.size(); j++) {
+                    Room foundAllRoom = rooms.get(j);
+                    int roomId = foundAllRoom.floor * 100 + foundAllRoom.id;
+
+                    if(bookedAllRoom.regDate.equals(foundAllRoom.bookingDate) && bookedAllRoom.roomId == roomId && loginedGuest.name.equals(bookedAllRoom.guestName)) {
+                        System.out.printf("    %4d |  %d | %s\n", bookedAllRoom.id, bookedAllRoom.roomId, bookedAllRoom.regDate);
+                    }
+                }
+            }
+            System.out.println("====================================");
+            System.out.print("예약을 취소하시겠습니까?) ");
+            String answer = sc.nextLine();
+
+            Booking foundBooking = foundBookedRoomByName(loginedGuest.name);
+            Room foundRoom = getRoomsByNum(foundBooking.roomId);
+
+            if(answer.equals("yes")) {
+                System.out.print("취소하시고 싶은 예약번호를 입력(숫자만) : ");
+                int answerId = sc.nextInt();
+                sc.nextLine();
+
+                if(answerId == foundBooking.id) {
+                    bookings.remove(foundBooking);
+                    foundRoom.bookingDate = null;
+                    foundRoom.booked = "예약가능";
+
+                    System.out.println("예약이 취소되었습니다!!");
+                }
+            }
+            else if(answer.equals("no")) {
+                System.out.println("예약취소를 중단합니다.");
+            }
+            else {
+                System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");
+            }
+        }
     }
 
     public void doWriteReview() {
