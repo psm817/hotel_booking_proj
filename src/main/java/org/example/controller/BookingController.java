@@ -1,6 +1,6 @@
 package org.example.controller;
 
-import org.example.Container;
+import org.example.container.Container;
 import org.example.dto.Booking;
 import org.example.dto.Room;
 import org.example.service.BookingService;

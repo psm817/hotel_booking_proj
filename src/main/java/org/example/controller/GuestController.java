@@ -1,27 +1,26 @@
 package org.example.controller;
 
+import org.example.service.GuestService;
 import org.example.util.Util;
 import org.example.dto.Guest;
-import org.example.Container;
+import org.example.container.Container;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class GuestController extends Controller {
     private Scanner sc;
     private String cmd;
-    private List<Guest> guests;
+    private GuestService guestService;
 
     public GuestController() {
         sc = new Scanner(System.in);
-        guests = Container.guestDao.guests;
+        guestService = Container.guestService;
     }
 
     public void makeTestGuest() {
-        guests.add(new Guest(1, Util.getTodayDate(), "admin", "admin", "관리자", "admin@gmail.com", "010-1234-5678"));
-        guests.add(new Guest(2, Util.getTodayDate(), "user1", "user1", "홍길동", "user1@gmail.com", "010-1234-5678"));
-        guests.add(new Guest(3, Util.getTodayDate(), "user2", "user2", "임꺽정", "user2@gmail.com", "010-1234-5678"));
+        guestService.add(new Guest(Container.guestDao.getNewId(), Util.getTodayDate(), "admin", "admin", "관리자", "admin@gmail.com", "010-1234-5678"));
+        guestService.add(new Guest(Container.guestDao.getNewId(), Util.getTodayDate(), "user1", "user1", "홍길동", "user1@gmail.com", "010-1234-5678"));
+        guestService.add(new Guest(Container.guestDao.getNewId(), Util.getTodayDate(), "user2", "user2", "임꺽정", "user2@gmail.com", "010-1234-5678"));
     }
 
     public void doAction(String cmd, String actionMethodName) {
@@ -44,7 +43,7 @@ public class GuestController extends Controller {
     }
 
     public void doJoin() {
-        int id = guests.size() + 1;
+        int id = Container.guestDao.getNewId();
         String regDate = Util.getTodayDate();
         String loginId = null;
         String loginPw = null;
@@ -88,7 +87,7 @@ public class GuestController extends Controller {
         String phoneNum = sc.nextLine();
 
         Guest guest = new Guest(id, regDate, loginId, loginPw, name, email, phoneNum);
-        guests.add(guest);
+        guestService.add(guest);
 
         System.out.println("회원가입이 완료되었습니다. 환영합니다!!");
 
@@ -100,7 +99,7 @@ public class GuestController extends Controller {
         System.out.print("PW : ");
         String loginPw = sc.nextLine();
 
-        Guest guest = getGuestByLoginId(loginId);
+        Guest guest = guestService.getGuestByLoginId(loginId);
 
         if(guest == null) {
             System.out.println("입력하신 ID는 등록되지 않은 ID입니다.");
@@ -122,36 +121,13 @@ public class GuestController extends Controller {
         System.out.println("로그아웃 완료!!");
     }
 
-    public Guest getGuestByLoginId(String loginId) {
-        int index = getGuestIndexByLoginId(loginId);
-
-        if(index == -1) {
-            return null;
-        }
-
-        return guests.get(index);
-    }
-
     public boolean isJoinableLoginId(String loginId) {
-        int index = getGuestIndexByLoginId(loginId);
+        int index = guestService.getGuestIndexByLoginId(loginId);
 
         if(index == -1) {
             return true;
         }
 
         return false;
-    }
-
-    public int getGuestIndexByLoginId(String loginId) {
-        int i = 0;
-
-        for(Guest guest : guests) {
-            if(guest.loginId.equals(loginId)) {
-                return i;
-            }
-            i++;
-        }
-
-        return -1;
     }
 }
