@@ -204,24 +204,33 @@ public class BookingController extends Controller {
                     }
                 }
             }
+
             System.out.println("====================================");
             System.out.print("예약을 취소하시겠습니까?) ");
             String answer = sc.nextLine();
-
-            Booking foundBooking = foundBookedRoomByName(loginedGuest.name);
-            Room foundRoom = getRoomsByNum(foundBooking.roomId);
 
             if(answer.equals("yes")) {
                 System.out.print("취소하시고 싶은 예약번호를 입력(숫자만) : ");
                 int answerId = sc.nextInt();
                 sc.nextLine();
 
-                if(answerId == foundBooking.id) {
-                    bookings.remove(foundBooking);
-                    foundRoom.bookingDate = null;
-                    foundRoom.booked = "예약가능";
+                for(int i = 0; i < bookings.size(); i++) {
+                    Booking bookedAllRoom = bookings.get(i);
 
-                    System.out.println("예약이 취소되었습니다!!");
+                    for(int j = 0; j < rooms.size(); j++) {
+                        Room foundAllRoom = rooms.get(j);
+                        int roomId = foundAllRoom.floor * 100 + foundAllRoom.id;
+
+                        if(bookedAllRoom.regDate.equals(foundAllRoom.bookingDate) && bookedAllRoom.roomId == roomId && loginedGuest.name.equals(bookedAllRoom.guestName)) {
+                            if(bookedAllRoom.id == answerId) {
+                                bookings.remove(bookedAllRoom);
+                                foundAllRoom.bookingDate = null;
+                                foundAllRoom.booked = "예약가능";
+
+                                System.out.println("예약이 취소되었습니다!!");
+                            }
+                        }
+                    }
                 }
             }
             else if(answer.equals("no")) {
@@ -269,18 +278,5 @@ public class BookingController extends Controller {
         }
 
         return sum;
-    }
-
-    private Booking foundBookedRoomByName(String name) {
-        int i = 0;
-
-        for(Booking booking : bookings) {
-            if(booking.guestName.equals(name)) {
-                return bookings.get(i);
-            }
-            i++;
-        }
-
-        return null;
     }
 }
