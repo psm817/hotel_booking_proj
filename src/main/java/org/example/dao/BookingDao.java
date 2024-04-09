@@ -2,6 +2,7 @@ package org.example.dao;
 
 import org.example.container.Container;
 import org.example.controller.Session;
+import org.example.db.DBConnection;
 import org.example.dto.Booking;
 import org.example.dto.Guest;
 import org.example.dto.Room;
@@ -12,15 +13,26 @@ import java.util.List;
 public class BookingDao extends Dao {
     public List<Booking> bookings;
     private Session session;
+    private DBConnection dbConnection;
 
     public BookingDao() {
         bookings = new ArrayList<>();
         session = Container.getSession();
+        dbConnection = Container.getDBConnection();
     }
 
-    public void add(Booking booking) {
-        bookings.add(booking);
-        lastId++;
+    public int add(Booking booking) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("INSERT INTO `booking` "));
+        sb.append(String.format("SET roomId = %d,", booking.roomId));
+        sb.append(String.format("regDate = '%s', ", booking.regDate));
+        sb.append(String.format("guestName = '%s', ", booking.guestName));
+        sb.append(String.format("guestPhone = '%s', ", booking.guestPhone));
+        sb.append(String.format("roomType = %d, ", booking.roomType));
+        sb.append(String.format("bookingPay = %d ", booking.bookingPay));
+
+        return dbConnection.insert(sb.toString());
     }
 
     public Room getRoomsByNum(int roomNum) {

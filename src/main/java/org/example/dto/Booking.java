@@ -3,6 +3,8 @@ package org.example.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Map;
+
 @Getter
 @Setter
 public class Booking extends Dto {
@@ -13,7 +15,7 @@ public class Booking extends Dto {
     public int roomType;
     public int bookingPay;
 
-    public Booking(int id, int roomId, String regDate, String guestName, String guestPhone, int roomType, int bookingPay) {
+    public Booking(int roomId, String regDate, String guestName, String guestPhone, int roomType, int bookingPay) {
         this.id = id;
         this.roomId = roomId;
         this.regDate = regDate;
@@ -23,5 +25,13 @@ public class Booking extends Dto {
         this.bookingPay = bookingPay;
     }
 
-
+    public Booking(Map<String, Object> row) {
+        super(row);
+        this.roomId = (int) row.get("roomId");
+        this.regDate = (String) row.get("regDate");
+        this.guestName = (String) row.get("guestName");
+        this.guestPhone = (String) row.get("guestPhone");
+        this.roomType = (int) row.get("roomType");
+        this.bookingPay = (int) row.get("bookingPay");
+    }
 }

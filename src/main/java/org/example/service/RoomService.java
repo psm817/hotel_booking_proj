@@ -16,4 +16,12 @@ public class RoomService {
     public List<Room> getRooms() {
         return roomDao.getRooms();
     }
+
+    public Room getBookingAbleRoom(int floor, int number, String bookingDate) {
+        return roomDao.getBookingAbleRoom(floor, number, bookingDate);
+    }
+
+    public int setBookingComplete(int floor, int number, String bookingDate) {
+        return roomDao.setBookingComplete(floor, number, bookingDate);
+    }
 }

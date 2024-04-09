@@ -57,9 +57,11 @@ public class BookingController extends Controller {
         Guest loginedGuest = session.getLoginedGuest();
 
         System.out.print("예약할 객실 호수 입력(숫자만) : ");
-        int roomNum = sc.nextInt();
-        sc.nextLine();
+        String roomNum = sc.nextLine();
 
+        String[] roomNumBits = roomNum.split("");
+        int floor = Integer.parseInt(roomNumBits[0]);
+        int number = Integer.parseInt(roomNumBits[2]);
 
         // 날짜 입력 및 7일간 날짜 판단
         System.out.print("예약 날짜 입력) ");
@@ -71,76 +73,79 @@ public class BookingController extends Controller {
             return;
         }
 
-        // 예약가능한 객실 가져오기
-        Room bookingAbleRoom = bookingService.getRoomsByNum(roomNum);
+        // getBoookingAbleRoom에서 가져오기
+        // 호수가 같고, 날짜가 같은 조건 넣어서 select하기
+        Room bookingAbleRoom = Container.roomService.getBookingAbleRoom(floor, number, bookingDate);
 
-        // 객실이 없거나, 예약불가 처리
-        if(bookingAbleRoom == null || bookingAbleRoom.booked.equals("예약불가")) {
-            System.out.println("예약이 이미 완료되었거나, 존재하지 않는 객실입니다.");
-            return;
+        if(bookingAbleRoom == null) {
+            System.out.println("선택하신 객실은 존재하지 않습니다.");
         }
 
-        // 요금 안내
-        int payment = 150000;
-        int count = 0;
-        int plusPay = 20000;
+        else if(bookingAbleRoom.booked.equals("예약불가")) {
+            System.out.println("예약이 이미 완료된 객실입니다.");
+        }
 
-        // 객실 타입 안내
-        if(roomNum % 2 == 1) {
-            System.out.print("인원은 몇 명 이신가요?) ");
-            int peopleNum = sc.nextInt();
-            sc.nextLine();
+        else {
+            // 요금 안내
+            int payment = 150000;
+            int count = 0;
+            int plusPay = 20000;
 
-            if(peopleNum > 2) {
-                count = peopleNum - 2;
-                System.out.println("[싱글] 정원 2명을 초과하셨습니다!!");
-                System.out.println("추가 인원 당 20,000원의 추가 요금이 발생합니다!!");
+            // 객실 타입 안내
+            if(bookingAbleRoom.roomNum % 2 == 1) {
+                System.out.print("인원은 몇 명 이신가요?) ");
+                int peopleNum = sc.nextInt();
+                sc.nextLine();
+
+                if(peopleNum > 2) {
+                    count = peopleNum - 2;
+                    System.out.println("[싱글] 정원 2명을 초과하셨습니다!!");
+                    System.out.println("추가 인원 당 20,000원의 추가 요금이 발생합니다!!");
+                }
             }
-        }
-        else if(roomNum % 2 == 0) {
-            payment += 100000;
-            System.out.print("인원은 몇 명 이신가요?) ");
-            int peopleNum = sc.nextInt();
-            sc.nextLine();
+            else if(bookingAbleRoom.roomNum % 2 == 0) {
+                payment += 100000;
+                System.out.print("인원은 몇 명 이신가요?) ");
+                int peopleNum = sc.nextInt();
+                sc.nextLine();
 
-            if(peopleNum > 4) {
-                count = peopleNum - 4;
-                System.out.println("[더블] 정원 4명을 초과하셨습니다!!");
-                System.out.println("추가 인원 당 20,000원의 추가 요금이 발생합니다!!");
+                if(peopleNum > 4) {
+                    count = peopleNum - 4;
+                    System.out.println("[더블] 정원 4명을 초과하셨습니다!!");
+                    System.out.println("추가 인원 당 20,000원의 추가 요금이 발생합니다!!");
+                }
             }
-        }
 
-        while(true) {
-            int id = Container.bookingDao.getNewId();
             System.out.printf("총 금액은 [%,d원] 입니다.\n", (payment+(count*plusPay)));
-            System.out.print("예약을 진행할까요?) ");
-            String answer = sc.nextLine();
-            answer = answer.trim();
 
-            if(answer.equals("yes")) {
-                // booking 배열 추가
-                Booking booking = new Booking(id, roomNum, bookingDate, loginedGuest.name, loginedGuest.phoneNum, bookingAbleRoom.type, (payment+(count*plusPay)));
-                bookingService.add(booking);
+            while(true) {
+                System.out.print("예약을 진행할까요?) ");
+                String answer = sc.nextLine();
+                answer = answer.trim();
 
-                // 로그인된 회원의 이름으로 예약 성공
-                System.out.printf("[%s]님 예약 성공하셨습니다!! 결제는 당일 카운터에서 진행 부탁드립니다!\n", booking.guestName);
+                if(answer.equals("yes")) {
+                    bookingService.add(Integer.parseInt(roomNum), bookingDate, loginedGuest.name, loginedGuest.phoneNum, bookingAbleRoom.type, (payment+(count*plusPay)));
 
-                // room 상태를 예약불가로 변경
-                bookingAbleRoom.booked = "예약불가";
-                bookingAbleRoom.bookingDate = bookingDate;
+                    // bookingAbleRoom 상태를 예약불가로 변경
+                    Container.roomService.setBookingComplete(floor, number, bookingDate);
 
-                break;
-            }
+                    // 로그인된 회원의 이름으로 예약 성공
+                    System.out.printf("[%s]님 예약 성공하셨습니다!! 결제는 당일 카운터에서 진행 부탁드립니다!\n", loginedGuest.name);
+                    break;
+                }
 
-            else if(answer.equals("no")) {
-                System.out.println("예약을 중단합니다.");
-                break;
-            }
+                else if(answer.equals("no")) {
+                    System.out.println("예약을 중단합니다.");
+                    break;
+                }
 
-            else {
-                System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");
+                else {
+                    System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");
+                    continue;
+                }
             }
         }
+
     }
 
     public void doCheckBooking() {

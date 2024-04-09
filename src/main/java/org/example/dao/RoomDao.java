@@ -31,4 +31,31 @@ public class RoomDao extends Dao {
 
         return rooms;
     }
+
+    public Room getBookingAbleRoom(int floor, int number, String bookingDate) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("SELECT * "));
+        sb.append(String.format("FROM `room` "));
+        sb.append(String.format("WHERE floor = %d AND roomNum = %d AND dayOfSelect = '%s' ", floor, number, bookingDate));
+
+        Map<String, Object> row = dbConnection.selectRow(sb.toString());
+
+        if(row.isEmpty()) {
+            return null;
+        }
+
+        return new Room(row);
+    }
+
+    public int setBookingComplete(int floor, int number, String bookingDate) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("UPDATE `room` "));
+        sb.append(String.format("SET booked = '예약불가', "));
+        sb.append(String.format("bookingDate = '%s' ", bookingDate));
+        sb.append(String.format("WHERE floor = %d AND roomNum = %d AND dayOfSelect = '%s' ", floor, number, bookingDate));
+
+        return dbConnection.update(sb.toString());
+    }
 }
