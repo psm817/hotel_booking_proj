@@ -1,5 +1,10 @@
 package org.example.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Booking extends Dto {
     public int roomId;
     public String regDate;

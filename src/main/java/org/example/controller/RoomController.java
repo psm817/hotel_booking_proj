@@ -18,26 +18,6 @@ public class RoomController extends Controller {
         roomService = Container.roomService;
     }
 
-    public void makeTestData() {
-        roomService.add(new Room(Container.roomDao.getNewId(), 1, 3, 1, null, "2024-04-09", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 2, 3, 2, null, "2024-04-09", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 3, 3, 1, null, "2024-04-09", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 4, 3, 2, null, "2024-04-09", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 5, 3, 1, "2020-01-01", "2024-04-09", "예약불가"));
-
-        roomService.add(new Room(Container.roomDao.getNewId(), 1, 4, 1, null, "2024-04-09", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 2, 4, 2, null, "2024-04-09", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 3, 4, 1, null, "2024-04-09", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 4, 4, 2, null, "2024-04-09", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 5, 4, 1, "2020-01-01", "2024-04-09", "예약불가"));
-
-        roomService.add(new Room(Container.roomDao.getNewId(), 1, 5, 1, null, "2024-04-09", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 2, 5, 2, null, "2024-04-09", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 3, 5, 1, null, "2024-04-09", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 4, 5, 2, null, "2024-04-09", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 5, 5, 1, "2020-01-01", "2024-04-09", "예약불가"));
-    }
-
     public void doAction(String cmd, String actionMethodName) {
         this.cmd = cmd;
 
@@ -52,6 +32,8 @@ public class RoomController extends Controller {
     }
 
     public void showList() {
+        List<Room> forListRooms = roomService.getRooms();
+
         String[] cmdBits = cmd.split(" ");
         if(cmdBits.length > 2) {
             System.out.println("존재하지 않는 서비스입니다.");
@@ -76,8 +58,6 @@ public class RoomController extends Controller {
             System.out.println("3, 4, 5층 중 하나를 입력해주세요.");
         }
         else {
-            List<Room> forListRooms = Container.roomDao.rooms;
-
             System.out.printf("==== [%s] %d층 객실 현황 ====\n", checkDate, floor);
             System.out.println("호수 | 객실타입 | 상태");
 
@@ -93,11 +73,6 @@ public class RoomController extends Controller {
                             System.out.printf("%d  |     더블 | %s\n", (room.floor * 100 +room.roomNum), room.booked);
                         }
                     }
-                }
-
-                else {
-                    System.out.println("조회된 객실이 없습니다.");
-                    return;
                 }
             }
 

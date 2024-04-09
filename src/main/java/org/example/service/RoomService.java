@@ -4,6 +4,8 @@ import org.example.container.Container;
 import org.example.dao.RoomDao;
 import org.example.dto.Room;
 
+import java.util.List;
+
 public class RoomService {
     private RoomDao roomDao;
 
@@ -13,5 +15,9 @@ public class RoomService {
 
     public void add(Room room) {
         roomDao.add(room);
+    }
+
+    public List<Room> getRooms() {
+        return roomDao.getRooms();
     }
 }

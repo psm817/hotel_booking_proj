@@ -26,7 +26,6 @@ public class App {
 
         Scanner sc = new Scanner(System.in);
 
-        roomController.makeTestData();
         guestController.makeTestGuest();
 
         while(true) {
