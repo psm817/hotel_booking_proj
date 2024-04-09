@@ -15,24 +15,20 @@ public class BookingService {
         bookingDao = Container.bookingDao;
     }
 
-    public Room getRoomsByNum(int roomNum) {
-        return bookingDao.getRoomsByNum(roomNum);
-    }
-
-    public int getRoomsIndexByNum(int roomNum) {
-        return bookingDao.getRoomsIndexByNum(roomNum);
-    }
-
-    public int getBookingsByName(String name) {
-        return bookingDao.getBookingsByName(name);
-    }
-
-    public List<Booking> getForPrintBookings() {
-        return bookingDao.getForPrintBookings();
+    public List<Booking> getForPrintBookings(String name) {
+        return bookingDao.getForPrintBookings(name);
     }
 
     public int add(int roomNum, String regDate, String guestName, String guestPhone, int roomType, int bookingPay) {
         Booking booking = new Booking(roomNum, regDate, guestName, guestPhone, roomType, bookingPay);
         return bookingDao.add(booking);
+    }
+
+    public Booking getForPrintBooking(int answerId) {
+        return bookingDao.getForPrintBooking(answerId);
+    }
+
+    public int deleteBooking(int answerId) {
+        return bookingDao.deleteBooking(answerId);
     }
 }

@@ -2,6 +2,7 @@ package org.example.dao;
 
 import org.example.container.Container;
 import org.example.db.DBConnection;
+import org.example.dto.Booking;
 import org.example.dto.Room;
 
 import java.util.ArrayList;
@@ -55,6 +56,17 @@ public class RoomDao extends Dao {
         sb.append(String.format("SET booked = '예약불가', "));
         sb.append(String.format("bookingDate = '%s' ", bookingDate));
         sb.append(String.format("WHERE floor = %d AND roomNum = %d AND dayOfSelect = '%s' ", floor, number, bookingDate));
+
+        return dbConnection.update(sb.toString());
+    }
+
+    public int setBookingDelete(int floor, int number) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("UPDATE `room` "));
+        sb.append(String.format("SET booked = '예약가능', "));
+        sb.append(String.format("bookingDate = NULL "));
+        sb.append(String.format("WHERE floor = %d AND roomNum = %d ", floor, number));
 
         return dbConnection.update(sb.toString());
     }

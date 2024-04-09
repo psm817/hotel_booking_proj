@@ -145,14 +145,16 @@ public class BookingController extends Controller {
                 }
             }
         }
-
     }
 
     public void doCheckBooking() {
         // 로그인 된 게스트 가져오기
         Guest loginedGuest = session.getLoginedGuest();
 
-        int foundBookingCount = bookingService.getBookingsByName(loginedGuest.name);
+        // 로그인된 회원이 예약한 목록 가져오기
+        List<Booking> forPrintBookings = bookingService.getForPrintBookings(loginedGuest.name);
+
+        int foundBookingCount = forPrintBookings.size();
         System.out.printf("%s 님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
 
         if (foundBookingCount >= 1) {
@@ -163,9 +165,6 @@ public class BookingController extends Controller {
                 if (answer.equals("yes")) {
                     System.out.printf("==== [%s 님] 예약 현황 =======\n", loginedGuest.name);
                     System.out.println("호수 | 객실타입 | 결제요금 | 체크인날짜");
-
-                    // 로그인된 회원이 예약한 목록 가져오기
-                    List<Booking> forPrintBookings = bookingService.getForPrintBookings();
 
                     // 예약한 목록 출력
                     for(int i = 0; i < forPrintBookings.size(); i++) {
@@ -198,7 +197,10 @@ public class BookingController extends Controller {
         // 로그인 된 게스트 가져오기
         Guest loginedGuest = session.getLoginedGuest();
 
-        int foundBookingCount = bookingService.getBookingsByName(loginedGuest.name);
+        // 로그인된 회원이 예약한 목록 가져오기
+        List<Booking> forPrintBookings = bookingService.getForPrintBookings(loginedGuest.name);
+
+        int foundBookingCount = forPrintBookings.size();
         System.out.printf("%s 님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
 
         if(foundBookingCount == 0) {
@@ -207,8 +209,6 @@ public class BookingController extends Controller {
         else {
             System.out.printf("==== [%s 님] 예약 현황 =======\n", loginedGuest.name);
             System.out.println("예약번호 | 호수 | 체크인날짜");
-
-            List<Booking> forPrintBookings = bookingService.getForPrintBookings();
 
             // 예약한 목록 출력
             for(int i = 0; i < forPrintBookings.size(); i++) {
@@ -226,24 +226,42 @@ public class BookingController extends Controller {
                 int answerId = sc.nextInt();
                 sc.nextLine();
 
-                for(int i = 0; i < Container.bookingDao.bookings.size(); i++) {
-                    Booking bookedAllRoom = Container.bookingDao.bookings.get(i);
+                // 예약번호에 따른 booking 가져오기
+                Booking forPrintBooking = bookingService.getForPrintBooking(answerId);
 
-                    for(int j = 0; j < rooms.size(); j++) {
-                        Room foundAllRoom = rooms.get(j);
-                        int roomId = foundAllRoom.floor * 100 + foundAllRoom.id;
+                // 객실번호(303과 같은)를 100으로 나눴을 때 몫을 층 수
+                int floor = forPrintBooking.roomId / 100;
+                // 객실번호(303과 같은)를 100으로 나눴을 때 나머지를 호수
+                int number = forPrintBooking.roomId % 10;
 
-                        if(bookedAllRoom.regDate.equals(foundAllRoom.bookingDate) && bookedAllRoom.roomId == roomId && loginedGuest.name.equals(bookedAllRoom.guestName)) {
-                            if(bookedAllRoom.id == answerId) {
-                                Container.bookingDao.bookings.remove(bookedAllRoom);
-                                foundAllRoom.bookingDate = null;
-                                foundAllRoom.booked = "예약가능";
+                // 삭제할 forPrintBooking을 인자로 넘겨 room 정보 수정하기
+                Container.roomService.setBooingDelete(floor, number);
+                // 예약목록에서 삭제
+                bookingService.deleteBooking(answerId);
 
-                                System.out.println("예약이 취소되었습니다!!");
-                            }
-                        }
-                    }
-                }
+                System.out.println("예약이 취소되었습니다!!");
+
+//                for(int i = 0; i < Container.bookingDao.bookings.size(); i++) {
+//                    Booking bookedAllRoom = Container.bookingDao.bookings.get(i);
+//
+//                    for(int j = 0; j < rooms.size(); j++) {
+//                        Room foundAllRoom = rooms.get(j);
+//                        int roomId = foundAllRoom.floor * 100 + foundAllRoom.id;
+//
+//                        if(bookedAllRoom.regDate.equals(foundAllRoom.bookingDate) && bookedAllRoom.roomId == roomId && loginedGuest.name.equals(bookedAllRoom.guestName)) {
+//                            if(bookedAllRoom.id == answerId) {
+//                                Container.bookingDao.bookings.remove(bookedAllRoom);
+//                                foundAllRoom.bookingDate = null;
+//                                foundAllRoom.booked = "예약가능";
+//
+////                                // bookingAbleRoom 상태를 예약불가로 변경
+////                                Container.roomService.setBookingComplete(floor, number, bookingDate);
+//
+//                                System.out.println("예약이 취소되었습니다!!");
+//                            }
+//                        }
+//                    }
+//                }
             }
             else if(answer.equals("no")) {
                 System.out.println("예약취소를 중단합니다.");

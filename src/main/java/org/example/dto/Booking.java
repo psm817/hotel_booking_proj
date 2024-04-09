@@ -28,7 +28,7 @@ public class Booking extends Dto {
     public Booking(Map<String, Object> row) {
         super(row);
         this.roomId = (int) row.get("roomId");
-        this.regDate = (String) row.get("regDate");
+        this.regDate = row.get("regDate").toString();
         this.guestName = (String) row.get("guestName");
         this.guestPhone = (String) row.get("guestPhone");
         this.roomType = (int) row.get("roomType");

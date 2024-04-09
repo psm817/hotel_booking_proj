@@ -9,6 +9,7 @@ import org.example.dto.Room;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class BookingDao extends Dao {
     public List<Booking> bookings;
@@ -35,58 +36,46 @@ public class BookingDao extends Dao {
         return dbConnection.insert(sb.toString());
     }
 
-    public Room getRoomsByNum(int roomNum) {
-        int index = getRoomsIndexByNum(roomNum);
-
-        if(index != -1) {
-            return Container.roomDao.rooms.get(index);
-        }
-
-        return null;
-    }
-
-    public int getRoomsIndexByNum(int roomNum) {
-        int i = 0;
-
-        for(Room room : Container.roomDao.rooms) {
-            if((room.floor * 100 + room.id) == roomNum) {
-                return i;
-            }
-            i++;
-        }
-
-        return -1;
-    }
-
-    public int getBookingsByName(String name) {
-        int sum = 0;
-
-        for(Booking booking : bookings) {
-            if(booking.guestName.equals(name)) {
-                sum++;
-            }
-        }
-
-        return sum;
-    }
-
-    public List<Booking> getForPrintBookings() {
+    public List<Booking> getForPrintBookings(String name) {
         // 로그인 된 게스트 가져오기
-        Guest loginedGuest = session.getLoginedGuest();
+        StringBuilder sb = new StringBuilder();
 
-        List<Booking> forPrintBookings = new ArrayList<>();
+        sb.append(String.format("SELECT * "));
+        sb.append(String.format("FROM booking "));
+        sb.append(String.format("WHERE guestName = '%s' ", name));
 
-        for (Booking bookedAllRoom : bookings) {
-            for (int j = 0; j < Container.roomDao.rooms.size(); j++) {
-                Room foundAllRoom = Container.roomDao.rooms.get(j);
-                int roomId = foundAllRoom.floor * 100 + foundAllRoom.id;
+        List<Booking> bookings = new ArrayList<>();
+        List<Map<String, Object>> rows = dbConnection.selectRows(sb.toString());
 
-                if (bookedAllRoom.regDate.equals(foundAllRoom.bookingDate) && bookedAllRoom.roomId == roomId && loginedGuest.name.equals(bookedAllRoom.guestName)) {
-                    forPrintBookings.add(bookedAllRoom);
-                }
-            }
+        for(Map<String, Object> row : rows) {
+            bookings.add(new Booking(row));
         }
 
-        return forPrintBookings;
+        return bookings;
+    }
+
+    public Booking getForPrintBooking(int answerId) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("SELECT * "));
+        sb.append(String.format("FROM `booking` "));
+        sb.append(String.format("WHERE id = %d ", answerId));
+
+        Map<String, Object> row = dbConnection.selectRow(sb.toString());
+
+        if(row.isEmpty()) {
+            return null;
+        }
+
+        return new Booking(row);
+    }
+
+    public int deleteBooking(int answerId) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("DELETE FROM `booking` "));
+        sb.append(String.format("WHERE id = %d ", answerId));
+
+        return dbConnection.delete(sb.toString());
     }
 }
