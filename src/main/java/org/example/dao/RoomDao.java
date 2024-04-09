@@ -17,11 +17,6 @@ public class RoomDao extends Dao {
         dbConnection = Container.getDBConnection();
     }
 
-    public void add(Room room) {
-        rooms.add(room);
-        lastId++;
-    }
-
     public List<Room> getRooms() {
         StringBuilder sb = new StringBuilder();
 

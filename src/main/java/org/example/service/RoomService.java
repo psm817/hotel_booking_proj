@@ -13,10 +13,6 @@ public class RoomService {
         roomDao = Container.roomDao;
     }
 
-    public void add(Room room) {
-        roomDao.add(room);
-    }
-
     public List<Room> getRooms() {
         return roomDao.getRooms();
     }

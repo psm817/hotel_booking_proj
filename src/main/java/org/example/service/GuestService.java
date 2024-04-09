@@ -11,15 +11,16 @@ public class GuestService {
         guestDao = Container.guestDao;
     }
 
-    public void add(Guest guest) {
-        guestDao.add(guest);
+    public int add(String regDate, String loginId, String loginPw, String name, String email, String phoneNum) {
+        Guest guest = new Guest(regDate, loginId, loginPw, name, email, phoneNum);
+        return guestDao.add(guest);
+    }
+
+    public int getNewId() {
+        return guestDao.getNewId();
     }
 
     public Guest getGuestByLoginId(String loginId) {
         return guestDao.getGuestByLoginId(loginId);
-    }
-
-    public int getGuestIndexByLoginId(String loginId) {
-        return guestDao.getGuestIndexByLoginId(loginId);
     }
 }

@@ -22,4 +22,6 @@ public class Booking extends Dto {
         this.roomType = roomType;
         this.bookingPay = bookingPay;
     }
+
+
 }

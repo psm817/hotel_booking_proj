@@ -19,12 +19,6 @@ public class GuestController extends Controller {
         session = Container.getSession();
     }
 
-    public void makeTestGuest() {
-        guestService.add(new Guest(Container.guestDao.getNewId(), Util.getTodayDate(), "admin", "admin", "관리자", "admin@gmail.com", "010-1234-5678"));
-        guestService.add(new Guest(Container.guestDao.getNewId(), Util.getTodayDate(), "user1", "user1", "홍길동", "user1@gmail.com", "010-1234-5678"));
-        guestService.add(new Guest(Container.guestDao.getNewId(), Util.getTodayDate(), "user2", "user2", "임꺽정", "user2@gmail.com", "010-1234-5678"));
-    }
-
     public void doAction(String cmd, String actionMethodName) {
         this.cmd = cmd;
         
@@ -45,7 +39,6 @@ public class GuestController extends Controller {
     }
 
     public void doJoin() {
-        int id = Container.guestDao.getNewId();
         String regDate = Util.getTodayDate();
         String loginId = null;
         String loginPw = null;
@@ -68,7 +61,6 @@ public class GuestController extends Controller {
         while(true) {
             System.out.print("PW : ");
             loginPw = sc.nextLine();
-
             System.out.print("PW 확인 : ");
             loginPwConfirm = sc.nextLine();
 
@@ -88,8 +80,7 @@ public class GuestController extends Controller {
         System.out.print("전화번호 : ");
         String phoneNum = sc.nextLine();
 
-        Guest guest = new Guest(id, regDate, loginId, loginPw, name, email, phoneNum);
-        guestService.add(guest);
+        guestService.add(regDate, loginId, loginPw, name, email, phoneNum);
 
         System.out.println("회원가입이 완료되었습니다. 환영합니다!!");
 
@@ -115,6 +106,7 @@ public class GuestController extends Controller {
 
         session.setLoginedGuest(guest);
         Guest loginedGuest = session.getLoginedGuest();
+
         System.out.printf("로그인 완료!! %s님 환영합니다.\n", loginedGuest.name);
 
     }
@@ -125,9 +117,9 @@ public class GuestController extends Controller {
     }
 
     public boolean isJoinableLoginId(String loginId) {
-        int index = guestService.getGuestIndexByLoginId(loginId);
+        Guest guest = guestService.getGuestByLoginId(loginId);
 
-        if(index == -1) {
+        if(guest == null) {
             return true;
         }
 

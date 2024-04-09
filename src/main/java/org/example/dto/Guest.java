@@ -3,6 +3,8 @@ package org.example.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Map;
+
 @Getter
 @Setter
 public class Guest extends Dto {
@@ -13,8 +15,17 @@ public class Guest extends Dto {
     public String email;        // 회원 이메일
     public String phoneNum;     // 회원 휴대전화
 
-    public Guest(int id, String regDate, String loginId, String loginPw, String name, String email, String phoneNum) {
-        this.id = id;
+    public Guest(Map<String, Object> row) {
+        super(row);
+        this.regDate = (String) row.get("regDate");
+        this.loginId = (String) row.get("loginId");
+        this.loginPw = (String) row.get("loginPw");
+        this.name = (String) row.get("name");
+        this.email = (String) row.get("email");
+        this.phoneNum = (String) row.get("phoneNum");
+    }
+
+    public Guest(String regDate, String loginId, String loginPw, String name, String email, String phoneNum) {
         this.regDate = regDate;
         this.loginId = loginId;
         this.loginPw = loginPw;
