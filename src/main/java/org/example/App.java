@@ -2,11 +2,20 @@ package org.example;
 
 import org.example.container.Container;
 import org.example.controller.*;
+import org.example.db.DBConnection;
 import org.example.util.Util;
 
 import java.util.Scanner;
 
 public class App {
+    public App() {
+        DBConnection.DB_NAME = "hotel_proj";
+        DBConnection.DB_USER = "sbsst";
+        DBConnection.DB_PASSWORD = "sbs123414";
+        DBConnection.DB_PORT = 3306;
+
+        Container.getDBConnection().connect();
+    }
     public void start() {
         callAllServices();
 
@@ -99,6 +108,7 @@ public class App {
         }
 
         sc.close();
+        Container.getDBConnection().close();
         System.out.println("감사합니다. 다음에 또 방문해주세요.");
     }
 
