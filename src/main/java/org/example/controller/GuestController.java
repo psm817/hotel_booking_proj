@@ -11,10 +11,12 @@ public class GuestController extends Controller {
     private Scanner sc;
     private String cmd;
     private GuestService guestService;
+    private Session session;
 
     public GuestController() {
         sc = new Scanner(System.in);
         guestService = Container.guestService;
+        session = Container.getSession();
     }
 
     public void makeTestGuest() {
@@ -111,13 +113,14 @@ public class GuestController extends Controller {
             return;
         }
 
-        loginedGuest = guest;
+        session.setLoginedGuest(guest);
+        Guest loginedGuest = session.getLoginedGuest();
         System.out.printf("로그인 완료!! %s님 환영합니다.\n", loginedGuest.name);
 
     }
 
     public void doLogout() {
-        loginedGuest = null;
+        session.setLoginedGuest(null);
         System.out.println("로그아웃 완료!!");
     }
 

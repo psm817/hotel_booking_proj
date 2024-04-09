@@ -1,19 +1,21 @@
 package org.example.dao;
 
 import org.example.container.Container;
+import org.example.controller.Session;
 import org.example.dto.Booking;
+import org.example.dto.Guest;
 import org.example.dto.Room;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.example.controller.Controller.loginedGuest;
-
 public class BookingDao extends Dao {
     public List<Booking> bookings;
+    private Session session;
 
     public BookingDao() {
         bookings = new ArrayList<>();
+        session = Container.getSession();
     }
 
     public void add(Booking booking) {
@@ -57,6 +59,9 @@ public class BookingDao extends Dao {
     }
 
     public List<Booking> getForPrintBookings() {
+        // 로그인 된 게스트 가져오기
+        Guest loginedGuest = session.getLoginedGuest();
+
         List<Booking> forPrintBookings = new ArrayList<>();
 
         for (Booking bookedAllRoom : bookings) {

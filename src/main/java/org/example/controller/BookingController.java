@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.container.Container;
 import org.example.dto.Booking;
+import org.example.dto.Guest;
 import org.example.dto.Room;
 import org.example.service.BookingService;
 import org.example.util.Util;
@@ -14,11 +15,13 @@ public class BookingController extends Controller {
     private String cmd;
     private List<Room> rooms;
     private BookingService bookingService;
+    private Session session;
 
     public BookingController() {
         sc = new Scanner(System.in);
         rooms = Container.roomDao.rooms;
         bookingService = Container.bookingService;
+        session = Container.getSession();
     }
 
     public void doAction(String cmd, String actionMethodName) {
@@ -49,6 +52,9 @@ public class BookingController extends Controller {
             System.out.println("존재하지 않는 서비스입니다.");
             return;
         }
+
+        // 로그인 된 게스트 가져오기
+        Guest loginedGuest = session.getLoginedGuest();
 
         System.out.print("예약할 객실 호수 입력(숫자만) : ");
         int roomNum = sc.nextInt();
@@ -138,6 +144,9 @@ public class BookingController extends Controller {
     }
 
     public void doCheckBooking() {
+        // 로그인 된 게스트 가져오기
+        Guest loginedGuest = session.getLoginedGuest();
+
         int foundBookingCount = bookingService.getBookingsByName(loginedGuest.name);
         System.out.printf("%s 님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
 
@@ -148,7 +157,7 @@ public class BookingController extends Controller {
             while (true) {
                 if (answer.equals("yes")) {
                     System.out.printf("==== [%s 님] 예약 현황 =======\n", loginedGuest.name);
-                    System.out.println("호수 | 객실타입 | 결제요금 | 예약날짜");
+                    System.out.println("호수 | 객실타입 | 결제요금 | 체크인날짜");
 
                     // 로그인된 회원이 예약한 목록 가져오기
                     List<Booking> forPrintBookings = bookingService.getForPrintBookings();
@@ -181,6 +190,9 @@ public class BookingController extends Controller {
     }
 
     public void doDeleteBooking() {
+        // 로그인 된 게스트 가져오기
+        Guest loginedGuest = session.getLoginedGuest();
+
         int foundBookingCount = bookingService.getBookingsByName(loginedGuest.name);
         System.out.printf("%s 님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
 
@@ -189,7 +201,7 @@ public class BookingController extends Controller {
         }
         else {
             System.out.printf("==== [%s 님] 예약 현황 =======\n", loginedGuest.name);
-            System.out.println("예약번호 | 호수 | 예약날짜");
+            System.out.println("예약번호 | 호수 | 체크인날짜");
 
             List<Booking> forPrintBookings = bookingService.getForPrintBookings();
 

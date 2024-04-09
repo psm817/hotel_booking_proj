@@ -19,23 +19,23 @@ public class RoomController extends Controller {
     }
 
     public void makeTestData() {
-        roomService.add(new Room(Container.roomDao.getNewId(), 1, 3, 1, null, "2024-04-08", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 2, 3, 2, null, "2024-04-08", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 3, 3, 1, null, "2024-04-08", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 4, 3, 2, null, "2024-04-08", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 5, 3, 1, "2020-01-01", "2024-04-08", "예약불가"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 1, 3, 1, null, "2024-04-09", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 2, 3, 2, null, "2024-04-09", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 3, 3, 1, null, "2024-04-09", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 4, 3, 2, null, "2024-04-09", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 5, 3, 1, "2020-01-01", "2024-04-09", "예약불가"));
 
-        roomService.add(new Room(Container.roomDao.getNewId(), 1, 4, 1, null, "2024-04-08", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 2, 4, 2, null, "2024-04-08", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 3, 4, 1, null, "2024-04-08", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 4, 4, 2, null, "2024-04-08", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 5, 4, 1, "2020-01-01", "2024-04-08", "예약불가"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 1, 4, 1, null, "2024-04-09", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 2, 4, 2, null, "2024-04-09", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 3, 4, 1, null, "2024-04-09", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 4, 4, 2, null, "2024-04-09", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 5, 4, 1, "2020-01-01", "2024-04-09", "예약불가"));
 
-        roomService.add(new Room(Container.roomDao.getNewId(), 1, 5, 1, null, "2024-04-08", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 2, 5, 2, null, "2024-04-08", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 3, 5, 1, null, "2024-04-08", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 4, 5, 2, null, "2024-04-08", "예약가능"));
-        roomService.add(new Room(Container.roomDao.getNewId(), 5, 5, 1, "2020-01-01", "2024-04-08", "예약불가"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 1, 5, 1, null, "2024-04-09", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 2, 5, 2, null, "2024-04-09", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 3, 5, 1, null, "2024-04-09", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 4, 5, 2, null, "2024-04-09", "예약가능"));
+        roomService.add(new Room(Container.roomDao.getNewId(), 5, 5, 1, "2020-01-01", "2024-04-09", "예약불가"));
     }
 
     public void doAction(String cmd, String actionMethodName) {
@@ -61,6 +61,7 @@ public class RoomController extends Controller {
         System.out.print("확인하시고 싶은 날짜를 입력해주세요) ");
         String checkDate = sc.nextLine();
 
+
         if(Util.checkWeekDate(checkDate) == false) {
             System.out.println("오늘 날짜부터 7일간 조회 가능합니다.");
             return;
@@ -85,7 +86,12 @@ public class RoomController extends Controller {
 
                 if(room.dayOfSelect.equals(checkDate)) {
                     if(room.floor == floor) {
-                        System.out.printf("%d  | %8s | %s\n", (room.floor * 100 +room.roomNum), room.type, room.booked);
+                        if(room.type == 1) {
+                            System.out.printf("%d  |     싱글 | %s\n", (room.floor * 100 +room.roomNum), room.booked);
+                        }
+                        else {
+                            System.out.printf("%d  |     더블 | %s\n", (room.floor * 100 +room.roomNum), room.booked);
+                        }
                     }
                 }
 
