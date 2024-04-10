@@ -70,4 +70,13 @@ public class RoomDao extends Dao {
 
         return dbConnection.update(sb.toString());
     }
+
+    public int roomDateDelete(String dayOfSelect) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("DELETE FROM `room` "));
+        sb.append(String.format("WHERE dayOfSelect = '%s' ", dayOfSelect));
+
+        return dbConnection.delete(sb.toString());
+    }
 }

@@ -240,28 +240,6 @@ public class BookingController extends Controller {
                 bookingService.deleteBooking(answerId);
 
                 System.out.println("예약이 취소되었습니다!!");
-
-//                for(int i = 0; i < Container.bookingDao.bookings.size(); i++) {
-//                    Booking bookedAllRoom = Container.bookingDao.bookings.get(i);
-//
-//                    for(int j = 0; j < rooms.size(); j++) {
-//                        Room foundAllRoom = rooms.get(j);
-//                        int roomId = foundAllRoom.floor * 100 + foundAllRoom.id;
-//
-//                        if(bookedAllRoom.regDate.equals(foundAllRoom.bookingDate) && bookedAllRoom.roomId == roomId && loginedGuest.name.equals(bookedAllRoom.guestName)) {
-//                            if(bookedAllRoom.id == answerId) {
-//                                Container.bookingDao.bookings.remove(bookedAllRoom);
-//                                foundAllRoom.bookingDate = null;
-//                                foundAllRoom.booked = "예약가능";
-//
-////                                // bookingAbleRoom 상태를 예약불가로 변경
-////                                Container.roomService.setBookingComplete(floor, number, bookingDate);
-//
-//                                System.out.println("예약이 취소되었습니다!!");
-//                            }
-//                        }
-//                    }
-//                }
             }
             else if(answer.equals("no")) {
                 System.out.println("예약취소를 중단합니다.");

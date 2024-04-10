@@ -64,6 +64,13 @@ public class RoomController extends Controller {
             for(int i = 0; i < forListRooms.size(); i++) {
                 Room room = forListRooms.get(i);
 
+                // 현재 날짜를 기준으로 지나간 날짜의 방은 삭제
+                if (Util.checkWeekDate(room.dayOfSelect) == false) {
+                    roomService.roomDateDelete(room.dayOfSelect);
+                }
+                // 현재 날짜를 기준으로 추가된 날짜의 방을 생성(15개방)
+
+
                 if(room.dayOfSelect.equals(checkDate)) {
                     if(room.floor == floor) {
                         if(room.type == 1) {

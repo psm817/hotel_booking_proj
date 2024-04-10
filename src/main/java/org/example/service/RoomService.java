@@ -29,4 +29,8 @@ public class RoomService {
     public int setBooingDelete(int floor, int number) {
         return roomDao.setBookingDelete(floor, number);
     }
+
+    public int roomDateDelete(String dayOfSelect) {
+        return roomDao.roomDateDelete(dayOfSelect);
+    }
 }
