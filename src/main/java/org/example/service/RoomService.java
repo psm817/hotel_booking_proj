@@ -33,4 +33,8 @@ public class RoomService {
     public int roomDateDelete(String dayOfSelect) {
         return roomDao.roomDateDelete(dayOfSelect);
     }
+
+    public int roomDatePlus(int i, int j) {
+        return roomDao.roomDatePlus(i, j);
+    }
 }

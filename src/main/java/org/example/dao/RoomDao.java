@@ -79,4 +79,21 @@ public class RoomDao extends Dao {
 
         return dbConnection.delete(sb.toString());
     }
+
+    public int roomDatePlus(int i, int j) {
+        StringBuilder sb = new StringBuilder();
+
+        // 호 수가 짝수면 2, 홀수면 1
+        int type = (j % 2 == 0) ? 2 : 1;
+
+        sb.append(String.format("INSERT INTO `room` "));
+        sb.append(String.format("SET roomNum = %d,", j));
+        sb.append(String.format("floor = %d, ", i));
+        sb.append(String.format("type = %d, ", type));
+        sb.append(String.format("bookingDate = NULL, "));
+        sb.append(String.format("booked = '예약가능', "));
+        sb.append(String.format("dayOfSelect = CURDATE() + INTERVAL 7 DAY "));
+
+        return dbConnection.insert(sb.toString());
+    }
 }

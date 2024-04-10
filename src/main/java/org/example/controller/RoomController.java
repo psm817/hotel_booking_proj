@@ -34,6 +34,13 @@ public class RoomController extends Controller {
     public void showList() {
         List<Room> forListRooms = roomService.getRooms();
 
+        // 현재 날짜를 기준으로 일주일 범위에 속하는 날짜의 방을 추가 생성 (15개)
+        for(int i = 3; i <= 5; i++) {
+            for(int j = 1; j <= 5; j++) {
+                roomService.roomDatePlus(i, j);
+            }
+        }
+
         String[] cmdBits = cmd.split(" ");
         if(cmdBits.length > 2) {
             System.out.println("존재하지 않는 서비스입니다.");
@@ -44,7 +51,7 @@ public class RoomController extends Controller {
         String checkDate = sc.nextLine();
 
 
-        if(Util.checkWeekDate(checkDate) == false) {
+        if(!Util.checkWeekDate(checkDate)) {
             System.out.println("오늘 날짜부터 7일간 조회 가능합니다.");
             return;
         }
@@ -65,11 +72,9 @@ public class RoomController extends Controller {
                 Room room = forListRooms.get(i);
 
                 // 현재 날짜를 기준으로 지나간 날짜의 방은 삭제
-                if (Util.checkWeekDate(room.dayOfSelect) == false) {
+                if (!Util.checkWeekDate(room.dayOfSelect)) {
                     roomService.roomDateDelete(room.dayOfSelect);
                 }
-                // 현재 날짜를 기준으로 추가된 날짜의 방을 생성(15개방)
-
 
                 if(room.dayOfSelect.equals(checkDate)) {
                     if(room.floor == floor) {
