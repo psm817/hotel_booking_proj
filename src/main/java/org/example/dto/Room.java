@@ -13,7 +13,9 @@ public class Room extends Dto {
     public int roomNum;     // 호수
     public int floor;       // 층
     public int type;        // 싱글, 더블
-    public String bookingDate;      // 예약한 날짜
+//    public String bookingDate;      // 예약한 날짜
+    public String checkInDate;
+    public String checkOutDate;
     public String booked;           // 예약 여부
     public String dayOfSelect;      // 선택 날짜
 
@@ -22,7 +24,8 @@ public class Room extends Dto {
         this.roomNum = (int) row.get("roomNum");
         this.floor = (int) row.get("floor");
         this.type = (int) row.get("type");
-        this.bookingDate = (String) row.get("bookingDate");
+        this.checkInDate = (String) row.get("checkInDate");
+        this.checkOutDate = (String) row.get("checkOutDate");
         this.dayOfSelect = row.get("dayOfSelect").toString();
         this.booked = (String) row.get("booked");
     }

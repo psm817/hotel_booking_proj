@@ -27,7 +27,8 @@ public class BookingDao extends Dao {
 
         sb.append(String.format("INSERT INTO `booking` "));
         sb.append(String.format("SET roomId = %d,", booking.roomId));
-        sb.append(String.format("regDate = '%s', ", booking.regDate));
+        sb.append(String.format("checkInDate = '%s', ", booking.checkInDate));
+        sb.append(String.format("checkOutDate = '%s', ", booking.checkOutDate));
         sb.append(String.format("guestName = '%s', ", booking.guestName));
         sb.append(String.format("guestPhone = '%s', ", booking.guestPhone));
         sb.append(String.format("roomType = %d, ", booking.roomType));

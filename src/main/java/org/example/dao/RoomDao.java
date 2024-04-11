@@ -33,40 +33,47 @@ public class RoomDao extends Dao {
         return rooms;
     }
 
-    public Room getBookingAbleRoom(int floor, int number, String bookingDate) {
+    public List<Room> getBookingAbleRoom(int floor, int number, String checkInDate, String checkOutDate) {
         StringBuilder sb = new StringBuilder();
 
         sb.append(String.format("SELECT * "));
         sb.append(String.format("FROM `room` "));
-        sb.append(String.format("WHERE floor = %d AND roomNum = %d AND dayOfSelect = '%s' ", floor, number, bookingDate));
+        sb.append(String.format("WHERE floor = %d AND ", floor, number));
+        sb.append(String.format("roomNum = %d AND ", number));
+        sb.append(String.format("dayOfSelect BETWEEN '%s' AND '%s' ", checkInDate, checkOutDate));
 
-        Map<String, Object> row = dbConnection.selectRow(sb.toString());
+        List<Room> rooms = new ArrayList<>();
+        List<Map<String, Object>> rows = dbConnection.selectRows(sb.toString());
 
-        if(row.isEmpty()) {
-            return null;
+        for(Map<String, Object> row : rows) {
+            rooms.add(new Room(row));
         }
 
-        return new Room(row);
+        return rooms;
     }
 
-    public int setBookingComplete(int floor, int number, String bookingDate) {
+    public int setBookingComplete(int floor, int number, String checkInDate, String checkOutDate) {
         StringBuilder sb = new StringBuilder();
 
         sb.append(String.format("UPDATE `room` "));
         sb.append(String.format("SET booked = '예약불가', "));
-        sb.append(String.format("bookingDate = '%s' ", bookingDate));
-        sb.append(String.format("WHERE floor = %d AND roomNum = %d AND dayOfSelect = '%s' ", floor, number, bookingDate));
+        sb.append(String.format("checkInDate = '%s', ", checkInDate));
+        sb.append(String.format("checkOutDate = '%s' ", checkOutDate));
+        sb.append(String.format("WHERE floor = %d AND roomNum = %d AND  ", floor, number));
+        sb.append(String.format("dayOfSelect BETWEEN '%s' AND '%s' ", checkInDate, checkOutDate));
 
         return dbConnection.update(sb.toString());
     }
 
-    public int setBookingDelete(int floor, int number) {
+    public int setBookingDelete(int floor, int number, String checkInDate, String checkOutDate) {
         StringBuilder sb = new StringBuilder();
 
         sb.append(String.format("UPDATE `room` "));
         sb.append(String.format("SET booked = '예약가능', "));
-        sb.append(String.format("bookingDate = NULL "));
-        sb.append(String.format("WHERE floor = %d AND roomNum = %d ", floor, number));
+        sb.append(String.format("checkInDate = NULL, "));
+        sb.append(String.format("checkOutDate = NULL "));
+        sb.append(String.format("WHERE floor = %d AND roomNum = %d AND ", floor, number));
+        sb.append(String.format("dayOfSelect BETWEEN '%s' AND '%s' ", checkInDate, checkOutDate));
 
         return dbConnection.update(sb.toString());
     }
@@ -90,7 +97,8 @@ public class RoomDao extends Dao {
         sb.append(String.format("SET roomNum = %d,", j));
         sb.append(String.format("floor = %d, ", i));
         sb.append(String.format("type = %d, ", type));
-        sb.append(String.format("bookingDate = NULL, "));
+        sb.append(String.format("checkInDate = NULL, "));
+        sb.append(String.format("checkOutDate = NULL, "));
         sb.append(String.format("booked = '예약가능', "));
         sb.append(String.format("dayOfSelect = CURDATE() + INTERVAL 7 DAY "));
 

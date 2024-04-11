@@ -19,8 +19,8 @@ public class BookingService {
         return bookingDao.getForPrintBookings(name);
     }
 
-    public int add(int roomNum, String regDate, String guestName, String guestPhone, int roomType, int bookingPay) {
-        Booking booking = new Booking(roomNum, regDate, guestName, guestPhone, roomType, bookingPay);
+    public int add(int roomNum, String checkInDate, String checkOutDate, String guestName, String guestPhone, int roomType, int bookingPay) {
+        Booking booking = new Booking(roomNum, checkInDate, checkOutDate, guestName, guestPhone, roomType, bookingPay);
         return bookingDao.add(booking);
     }
 

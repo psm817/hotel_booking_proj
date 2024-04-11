@@ -18,16 +18,16 @@ public class RoomService {
         return roomDao.getRooms();
     }
 
-    public Room getBookingAbleRoom(int floor, int number, String bookingDate) {
-        return roomDao.getBookingAbleRoom(floor, number, bookingDate);
+    public List<Room> getBookingAbleRoom(int floor, int number, String checkInDate, String checkOutDate) {
+        return roomDao.getBookingAbleRoom(floor, number, checkInDate, checkOutDate);
     }
 
-    public int setBookingComplete(int floor, int number, String bookingDate) {
-        return roomDao.setBookingComplete(floor, number, bookingDate);
+    public int setBookingComplete(int floor, int number, String checkInDate, String checkOutDate) {
+        return roomDao.setBookingComplete(floor, number, checkInDate, checkOutDate);
     }
 
-    public int setBooingDelete(int floor, int number) {
-        return roomDao.setBookingDelete(floor, number);
+    public int setBooingDelete(int floor, int number, String checkInDate, String checkOutDate) {
+        return roomDao.setBookingDelete(floor, number, checkInDate, checkOutDate);
     }
 
     public int roomDateDelete(String dayOfSelect) {
