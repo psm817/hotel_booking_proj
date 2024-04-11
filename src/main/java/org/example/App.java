@@ -36,7 +36,7 @@ public class App {
         }
 
         while(true) {
-            System.out.print("서비스를 입력해주세요) ");
+            System.out.print("원하는 서비스 입력) ");
             String cmd = sc.nextLine();
             cmd = cmd.trim();
 
@@ -125,7 +125,7 @@ public class App {
         System.out.println("=============== 서비스 모음 ===============");
         System.out.println("1. 호텔 소개 : hotel introduce (필독바람!!)");
         System.out.println("2. 객실 조회하기 : room list");
-        System.out.println("3. 객실 예약하기 : booking room");        // id, roomId, floor, guestName, guestPhone, type, regDate
+        System.out.println("3. 객실 예약하기 : booking room");
         System.out.println("4. 예약 확인하기 : booking check");
         System.out.println("5. 예약 취소 : booking delete");
         System.out.println("6. 로그인/로그아웃 : guest login/logout");

@@ -59,11 +59,11 @@ public class BookingController extends Controller {
         System.out.print("예약할 객실 호수 입력(숫자만) : ");
         String roomNum = sc.nextLine();
 
+        // 303과 같은 roomNum을 층(3)과 호수(3)로 쪼개기
         String[] roomNumBits = roomNum.split("");
         int floor = Integer.parseInt(roomNumBits[0]);
         int number = Integer.parseInt(roomNumBits[2]);
 
-        // 날짜 입력 및 7일간 날짜 판단
         // 체크인 날짜, 체크아웃 날짜 구분 짓기
         System.out.print("체크인 날짜 입력) ");
         String checkInDate = sc.nextLine();
@@ -73,14 +73,14 @@ public class BookingController extends Controller {
         String checkOutDate = sc.nextLine();
         checkOutDate = checkOutDate.trim();
 
+        // 날짜 입력 및 7일간 날짜 판단
+        // 체크인, 체크아웃 날짜가 오늘 날짜로부터 일주일 이내에 속하는지 확인
         if(!Util.checkWeekDate(checkInDate) || !Util.checkWeekDate(checkOutDate)) {
             System.out.println("오늘 날짜부터 7일간 조회 가능합니다.");
             return;
         }
 
-        // getBoookingAbleRoom에서 가져오기
-        // 호수가 같고, 날짜가 같은 조건 넣어서 select하기
-        // 체크인 날짜와 체크아웃 날짜 사이에 해당하는 리스트 가져오기
+        // 층, 호수가 같고 체크인/체크아웃 날짜 사이에 해당하는 room 리스트 가져오기
         List<Room> bookingAbleRooms = Container.roomService.getBookingAbleRoom(floor, number, checkInDate, checkOutDate);
 
         for(int i = 0; i < bookingAbleRooms.size(); i++) {
@@ -104,7 +104,6 @@ public class BookingController extends Controller {
                 int payment = 0;
                 int count = 0;
                 int plusPayPerson = 20000;
-
 
                 System.out.printf("숙박 기간은 총 [%d일] 입니다.\n", daysBetween);
 
@@ -174,9 +173,10 @@ public class BookingController extends Controller {
                     answer = answer.trim();
 
                     if(answer.equals("yes")) {
+                        // booking 리스트에 예약내역 추가
                         bookingService.add(Integer.parseInt(roomNum), checkInDate, checkOutDate, loginedGuest.name, loginedGuest.phoneNum, bookingAbleRoom.type, payment);
 
-                        // bookingAbleRoom 상태를 예약불가로 변경
+                        // 예약된 room의 상태를 예약불가로, 체크인/체크아웃 날짜 업데이트
                         Container.roomService.setBookingComplete(floor, number, checkInDate, checkOutDate);
 
                         // 로그인된 회원의 이름으로 예약 성공
@@ -208,7 +208,7 @@ public class BookingController extends Controller {
         List<Booking> forPrintBookings = bookingService.getForPrintBookings(loginedGuest.name);
 
         int foundBookingCount = forPrintBookings.size();
-        System.out.printf("%s 님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
+        System.out.printf("[%s]님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
 
         if (foundBookingCount >= 1) {
             System.out.print("예약 상세보기를 진행 하시겠습니까?) ");
@@ -216,7 +216,7 @@ public class BookingController extends Controller {
 
             while (true) {
                 if (answer.equals("yes")) {
-                    System.out.printf("==== [%s 님] 예약 현황 =======\n", loginedGuest.name);
+                    System.out.printf("==== [%s]님 예약 현황 =======\n", loginedGuest.name);
                     System.out.println("호수 | 객실타입 | 결제요금 | 체크인날짜 | 체크아웃날짜");
 
                     // 예약한 목록 출력
@@ -254,14 +254,14 @@ public class BookingController extends Controller {
         List<Booking> forPrintBookings = bookingService.getForPrintBookings(loginedGuest.name);
 
         int foundBookingCount = forPrintBookings.size();
-        System.out.printf("%s 님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
+        System.out.printf("[%s]님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
 
         if(foundBookingCount == 0) {
-            System.out.println("취소하실 예약 건이 없습니다.");
+            System.out.println("취소하실 예약이 없습니다.");
         }
         else {
-            System.out.printf("==== [%s 님] 예약 현황 =======\n", loginedGuest.name);
-            System.out.println("예약번호 | 호수 | 체크인날짜 | 체크아웃날짜");
+            System.out.printf("==== [%s]님 예약 현황 =======\n", loginedGuest.name);
+            System.out.println("예약번호 | 객실 | 체크인날짜 | 체크아웃날짜");
 
             // 예약한 목록 출력
             for(int i = 0; i < forPrintBookings.size(); i++) {
@@ -275,7 +275,7 @@ public class BookingController extends Controller {
             String answer = sc.nextLine();
 
             if(answer.equals("yes")) {
-                System.out.print("취소하시고 싶은 예약번호를 입력(숫자만) : ");
+                System.out.print("취소하고 싶은 예약번호 입력(숫자만) : ");
                 int answerId = sc.nextInt();
                 sc.nextLine();
 
