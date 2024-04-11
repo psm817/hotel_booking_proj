@@ -26,6 +26,13 @@ public class App {
 
         Scanner sc = new Scanner(System.in);
 
+        // 현재 날짜를 기준으로 일주일 범위에 속하는 날짜의 방을 추가 생성 (15개)
+        for(int i = 3; i <= 5; i++) {
+            for(int j = 1; j <= 5; j++) {
+                Container.roomService.roomDatePlus(i, j);
+            }
+        }
+
         while(true) {
             System.out.print("서비스를 입력해주세요) ");
             String cmd = sc.nextLine();

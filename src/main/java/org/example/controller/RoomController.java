@@ -34,12 +34,12 @@ public class RoomController extends Controller {
     public void showList() {
         List<Room> forListRooms = roomService.getRooms();
 
-        // 현재 날짜를 기준으로 일주일 범위에 속하는 날짜의 방을 추가 생성 (15개)
-        for(int i = 3; i <= 5; i++) {
-            for(int j = 1; j <= 5; j++) {
-                roomService.roomDatePlus(i, j);
-            }
-        }
+//        // 현재 날짜를 기준으로 일주일 범위에 속하는 날짜의 방을 추가 생성 (15개)
+//        for(int i = 3; i <= 5; i++) {
+//            for(int j = 1; j <= 5; j++) {
+//                roomService.roomDatePlus(i, j);
+//            }
+//        }
 
         String[] cmdBits = cmd.split(" ");
         if(cmdBits.length > 2) {
