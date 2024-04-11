@@ -1,4 +1,4 @@
-/* 데이터베이스 만들기 */
+--/* 데이터베이스 만들기 */
 DROP DATABASE IF EXISTS hotel_proj;
 CREATE DATABASE hotel_proj;
 USE hotel_proj;
@@ -8,11 +8,11 @@ SHOW TABLES;
 --/* booking 테이블 만들기 */
 CREATE TABLE `booking` (
 id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-checkInDate DATE,
-checkOutDate DATE,
+checkInDate DATE NOT NULL,
+checkOutDate DATE NOT NULL,
 roomId INT(10) UNSIGNED NOT NULL,
-guestName CHAR(100),
-guestPhone CHAR(100),
+guestName CHAR(100) NOT NULL,
+guestPhone CHAR(100) NOT NULL,
 roomType INT(10) UNSIGNED NOT NULL,
 bookingPay INT UNSIGNED NOT NULL
 )
@@ -57,14 +57,8 @@ dayOfSelect DATE NOT NULL
 )
 
 SELECT * FROM room;
+SELECT COUNT(*) FROM room;
 DESC room;
-
--- 체크인, 체크아웃 날짜 맞춰서 변경
-UPDATE room SET booked = '예약불가', checkInDate = '2024-04-11', checkOutDate = '2024-04-14'
-WHERE `floor` = 3 AND roomNum = 4 AND dayOfSelect BETWEEN '2024-04-11' AND '2024-04-14';
-
-UPDATE room SET booked = '예약가능', checkInDate = NULL, checkOutDate = NULL
-WHERE `floor` = 3 AND roomNum = 4 AND dayOfSelect BETWEEN '2024-04-11' AND '2024-04-14';
 
 DROP TABLE room;
 

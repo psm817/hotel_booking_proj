@@ -4,6 +4,7 @@ import org.example.container.Container;
 import org.example.db.DBConnection;
 import org.example.dto.Booking;
 import org.example.dto.Room;
+import org.example.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +56,15 @@ public class RoomDao extends Dao {
     public int setBookingComplete(int floor, int number, String checkInDate, String checkOutDate) {
         StringBuilder sb = new StringBuilder();
 
+        // 체크아웃 날짜에서 하루 빼기
+        String checkOutDateBefore = Util.getBeforeOneDay(checkOutDate);
+
         sb.append(String.format("UPDATE `room` "));
         sb.append(String.format("SET booked = '예약불가', "));
         sb.append(String.format("checkInDate = '%s', ", checkInDate));
         sb.append(String.format("checkOutDate = '%s' ", checkOutDate));
         sb.append(String.format("WHERE floor = %d AND roomNum = %d AND  ", floor, number));
-        sb.append(String.format("dayOfSelect BETWEEN '%s' AND '%s' ", checkInDate, checkOutDate));
+        sb.append(String.format("dayOfSelect BETWEEN '%s' AND '%s' ", checkInDate, checkOutDateBefore));
 
         return dbConnection.update(sb.toString());
     }
@@ -68,12 +72,15 @@ public class RoomDao extends Dao {
     public int setBookingDelete(int floor, int number, String checkInDate, String checkOutDate) {
         StringBuilder sb = new StringBuilder();
 
+        // 체크아웃 날짜에서 하루 빼기
+        String checkOutDateBefore = Util.getBeforeOneDay(checkOutDate);
+
         sb.append(String.format("UPDATE `room` "));
         sb.append(String.format("SET booked = '예약가능', "));
         sb.append(String.format("checkInDate = NULL, "));
         sb.append(String.format("checkOutDate = NULL "));
         sb.append(String.format("WHERE floor = %d AND roomNum = %d AND ", floor, number));
-        sb.append(String.format("dayOfSelect BETWEEN '%s' AND '%s' ", checkInDate, checkOutDate));
+        sb.append(String.format("dayOfSelect BETWEEN '%s' AND '%s' ", checkInDate, checkOutDateBefore));
 
         return dbConnection.update(sb.toString());
     }

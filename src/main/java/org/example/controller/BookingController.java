@@ -207,16 +207,36 @@ public class BookingController extends Controller {
         // 로그인된 회원이 예약한 목록 가져오기
         List<Booking> forPrintBookings = bookingService.getForPrintBookings(loginedGuest.name);
 
-        int foundBookingCount = forPrintBookings.size();
-        System.out.printf("[%s]님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
+        // 전체 예약 목록 가져오기
+        List<Booking> forAllBookings = bookingService.getForPrintBookings();
 
-        if (foundBookingCount >= 1) {
-            System.out.print("예약 상세보기를 진행 하시겠습니까?) ");
-            String answer = sc.nextLine();
-
+        // 관리자는 모든 예약 확인
+        if(loginedGuest.loginId.equals("admin")) {
             while (true) {
+                System.out.printf("======= 전체 예약 목록 =======\n", loginedGuest.name);
+                System.out.println("호수 | 예약자성함 | 체크인날짜 | 체크아웃날짜");
+
+                for(int i = 0; i < forAllBookings.size(); i++) {
+                    Booking bookingALLGuest = forAllBookings.get(i);
+
+                    System.out.printf("%d  |     %s | %4s |  %4s\n", bookingALLGuest.roomId, bookingALLGuest.guestName, bookingALLGuest.checkInDate, bookingALLGuest.checkOutDate);
+                }
+
+                System.out.println("====================================");
+                break;
+            }
+        }
+        // 회원은 각자 예약 건만 확인
+        else {
+            int foundBookingCount = forPrintBookings.size();
+            System.out.printf("[%s]님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
+
+            if (foundBookingCount >= 1) {
+                System.out.print("예약 상세보기를 진행 하시겠습니까?) ");
+                String answer = sc.nextLine();
+
                 if (answer.equals("yes")) {
-                    System.out.printf("==== [%s]님 예약 현황 =======\n", loginedGuest.name);
+                    System.out.printf("======= [%s]님 예약 현황 =======\n", loginedGuest.name);
                     System.out.println("호수 | 객실타입 | 결제요금 | 체크인날짜 | 체크아웃날짜");
 
                     // 예약한 목록 출력
@@ -232,11 +252,9 @@ public class BookingController extends Controller {
                     }
 
                     System.out.println("====================================");
-                    break;
                 }
                 else if (answer.equals("no")) {
                     System.out.println("상세보기를 건너뜁니다.");
-                    break;
                 }
                 else {
                     System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");

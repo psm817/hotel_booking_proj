@@ -19,6 +19,10 @@ public class BookingService {
         return bookingDao.getForPrintBookings(name);
     }
 
+    public List<Booking> getForPrintBookings() {
+        return bookingDao.getForPrintBookings();
+    }
+
     public int add(int roomNum, String checkInDate, String checkOutDate, String guestName, String guestPhone, int roomType, int bookingPay) {
         Booking booking = new Booking(roomNum, checkInDate, checkOutDate, guestName, guestPhone, roomType, bookingPay);
         return bookingDao.add(booking);

@@ -46,6 +46,7 @@ public class Util {
         return difference <= 7;
     }
 
+    // 체크인/체크아웃 사이가 몇 일인지 구하기 (숙박기간)
     public static long getDaysBetween(String checkInDate, String checkOutDate) {
         // 체크인, 체크아웃 문자열을 날짜로 파싱
         LocalDate checkInLocalDate = LocalDate.parse(checkInDate, formatter);
@@ -55,5 +56,15 @@ public class Util {
         long daysBetween = ChronoUnit.DAYS.between(checkInLocalDate, checkOutLocalDate);
 
         return daysBetween;
+    }
+
+    // 체크아웃 하루 전날 뽑아내기
+    public static String getBeforeOneDay(String checkOutDate) {
+        LocalDate localCheckDate = LocalDate.parse(checkOutDate, formatter);
+        LocalDate dayBeforeCheckOutDate = localCheckDate.minusDays(1);
+
+        String checkOutDateBefore = dayBeforeCheckOutDate.format(formatter);
+
+        return checkOutDateBefore;
     }
 }

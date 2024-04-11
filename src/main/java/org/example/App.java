@@ -131,7 +131,8 @@ public class App {
         System.out.println("6. 로그인/로그아웃 : guest login/logout");
         System.out.println("7. 회원 가입 : guest join");
         System.out.println("8. 리뷰 남기기 : booking review");
-        System.out.println("9. 서비스 다시보기 : service");
+        System.out.println("9. 리뷰 보기 : review list");
+        System.out.println("10. 서비스 다시보기 : service");
         System.out.println("===========================================");
         System.out.printf("\n");
     }
