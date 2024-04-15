@@ -23,6 +23,7 @@ public class App {
         RoomController roomController = new RoomController();
         BookingController bookingController = new BookingController();
         GuestController guestController = new GuestController();
+        ReviewController reviewController = new ReviewController();
 
         Scanner sc = new Scanner(System.in);
 
@@ -76,6 +77,9 @@ public class App {
             }
             else if(controllerName.equals("guest")) {
                 controller = guestController;
+            }
+            else if(controllerName.equals("review")) {
+                controller = reviewController;
             }
             else {
                 System.out.println("존재하지 않는 서비스입니다.");

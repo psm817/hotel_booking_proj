@@ -46,4 +46,20 @@ public class GuestDao extends Dao {
 
         return new Guest(guestRow);
     }
+
+    public Guest getGuestByName(String guestName) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("SELECT * "));
+        sb.append(String.format("FROM `guest` "));
+        sb.append(String.format("WHERE name = '%s' ", guestName));
+
+        Map<String, Object> guestRow = dbConnection.selectRow((sb.toString()));
+
+        if(guestRow.isEmpty()) {
+            return null;
+        }
+
+        return new Guest(guestRow);
+    }
 }

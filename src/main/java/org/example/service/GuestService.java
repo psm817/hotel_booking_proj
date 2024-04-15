@@ -23,4 +23,8 @@ public class GuestService {
     public Guest getGuestByLoginId(String loginId) {
         return guestDao.getGuestByLoginId(loginId);
     }
+
+    public Guest getGuestByName(String guestName) {
+        return guestDao.getGuestByName(guestName);
+    }
 }

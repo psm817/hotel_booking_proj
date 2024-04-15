@@ -13,7 +13,6 @@ public class Room extends Dto {
     public int roomNum;     // 호수
     public int floor;       // 층
     public int type;        // 싱글, 더블
-//    public String bookingDate;      // 예약한 날짜
     public String checkInDate;
     public String checkOutDate;
     public String booked;           // 예약 여부

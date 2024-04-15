@@ -16,12 +16,12 @@ public class Review extends Dto {
     public String body;
     public double score;
 
-public Review(Map<String, Object> row) {
-    super(row);
-    this.regDate = (String) row.get("regDate");
-    this.bookingId = (int) row.get("bookingId");
-    this.guestId = (int) row.get("guestId");
-    this.body = (String) row.get("body");
-    this.score = (double) row.get("score");
+    public Review(Map<String, Object> row) {
+        super(row);
+        this.regDate = (String) row.get("regDate");
+        this.bookingId = (int) row.get("bookingId");
+        this.guestId = (int) row.get("guestId");
+        this.body = (String) row.get("body");
+        this.score = (double) row.get("score");
     }
 }

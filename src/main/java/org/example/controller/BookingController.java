@@ -5,6 +5,7 @@ import org.example.dto.Booking;
 import org.example.dto.Guest;
 import org.example.dto.Room;
 import org.example.service.BookingService;
+import org.example.service.RoomService;
 import org.example.util.Util;
 
 import java.util.InputMismatchException;
@@ -14,14 +15,14 @@ import java.util.Scanner;
 public class BookingController extends Controller {
     private Scanner sc;
     private String cmd;
-    private List<Room> rooms;
     private BookingService bookingService;
+    private RoomService roomService;
     private Session session;
 
     public BookingController() {
         sc = new Scanner(System.in);
-        rooms = Container.roomDao.rooms;
         bookingService = Container.bookingService;
+        roomService = Container.roomService;
         session = Container.getSession();
     }
 
@@ -82,7 +83,7 @@ public class BookingController extends Controller {
         }
 
         // 층, 호수가 같고 체크인/체크아웃 날짜 사이에 해당하는 room 리스트 가져오기
-        List<Room> bookingAbleRooms = Container.roomService.getBookingAbleRoom(floor, number, checkInDate, checkOutDate);
+        List<Room> bookingAbleRooms = roomService.getBookingAbleRoom(floor, number, checkInDate, checkOutDate);
 
         for(int i = 0; i < bookingAbleRooms.size(); i++) {
             Room bookingAbleRoom = bookingAbleRooms.get(i);
@@ -178,7 +179,7 @@ public class BookingController extends Controller {
                         bookingService.add(Integer.parseInt(roomNum), checkInDate, checkOutDate, loginedGuest.name, loginedGuest.phoneNum, bookingAbleRoom.type, payment);
 
                         // 예약된 room의 상태를 예약불가로, 체크인/체크아웃 날짜 업데이트
-                        Container.roomService.setBookingComplete(floor, number, checkInDate, checkOutDate);
+                        roomService.setBookingComplete(floor, number, checkInDate, checkOutDate);
 
                         // 로그인된 회원의 이름으로 예약 성공
                         System.out.printf("[%s]님 예약 성공하셨습니다!! 결제는 당일 카운터에서 진행 부탁드립니다!\n", loginedGuest.name);
@@ -313,7 +314,7 @@ public class BookingController extends Controller {
                         int number = forPrintBooking.roomId % 10;
 
                         // 삭제할 forPrintBooking을 인자로 넘겨 room 정보 수정하기
-                        Container.roomService.setBooingDelete(floor, number, forPrintBooking.checkInDate, forPrintBooking.checkOutDate);
+                        roomService.setBooingDelete(floor, number, forPrintBooking.checkInDate, forPrintBooking.checkOutDate);
                         // 예약목록에서 삭제
                         bookingService.deleteBooking(answerId);
 
