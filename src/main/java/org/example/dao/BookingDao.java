@@ -57,7 +57,11 @@ public class BookingDao extends Dao {
 
         sb.append(String.format("SELECT * "));
         sb.append(String.format("FROM booking "));
-        sb.append(String.format("WHERE guestName = '%s' AND checkInDate >= '%s' ", name, todayDate));
+        sb.append(String.format("WHERE checkInDate >= '%s' ",todayDate));
+
+        if(!"admin".equals(name)) {
+            sb.append(String.format("AND guestName = '%s' ", name));
+        }
 
         List<Booking> bookings = new ArrayList<>();
         List<Map<String, Object>> rows = dbConnection.selectRows(sb.toString());

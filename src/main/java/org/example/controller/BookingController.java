@@ -211,20 +211,17 @@ public class BookingController extends Controller {
 
         // 관리자는 모든 예약 확인
         if(loginedGuest.loginId.equals("admin")) {
-            while (true) {
-                System.out.printf("======= 전체 예약 목록 =============\n", loginedGuest.name);
-                System.out.printf("** 오늘 날짜 : %s **\n", Util.getTodayDate());
-                System.out.println("호수 | 예약자성함 | 체크인날짜 | 체크아웃날짜");
+            System.out.println("========== 전체 예약 목록 ==========");
+            System.out.printf("** 오늘 날짜 : %s **\n", Util.getTodayDate());
+            System.out.println("예약번호 | 호수 | 예약자성함 | 체크인날짜 | 체크아웃날짜");
 
-                for(int i = 0; i < forAllBookings.size(); i++) {
-                    Booking bookingALLGuest = forAllBookings.get(i);
+            for(int i = 0; i < forAllBookings.size(); i++) {
+                Booking bookingALLGuest = forAllBookings.get(i);
 
-                    System.out.printf("%d  |     %s | %4s |  %4s\n", bookingALLGuest.roomId, bookingALLGuest.guestName, bookingALLGuest.checkInDate, bookingALLGuest.checkOutDate);
-                }
-
-                System.out.println("====================================");
-                break;
+                System.out.printf("  %6d |  %d |     %s | %4s |  %4s\n", bookingALLGuest.id, bookingALLGuest.roomId, bookingALLGuest.guestName, bookingALLGuest.checkInDate, bookingALLGuest.checkOutDate);
             }
+
+            System.out.println("====================================");
         }
         // 회원은 각자 예약 건만 확인
         else {
@@ -272,39 +269,40 @@ public class BookingController extends Controller {
         // 오늘 날짜로 체크인이 지난 booking은 제외하고 로그인된 회원이 예약한 목록 가져오기
         List<Booking> forBookingAbleDelete = bookingService.getForPrintBookings(loginedGuest.name, Util.getTodayDate());
 
-        int foundBookingCount = forBookingAbleDelete.size();
-        System.out.printf("[%s]님, 취소 가능하신 예약은 총 [%d]건 입니다.\n", loginedGuest.name, foundBookingCount);
+        // 삭제할 수 있는 모든 booking 가져오기
+        List<Booking> forAllBookingAbleDelete = bookingService.getForPrintBookings("admin", Util.getTodayDate());
 
-        if(foundBookingCount == 0) {
-            System.out.println("취소하실 예약이 없습니다.");
-        }
+        // 관리자는 모든 예약 확인
+        if(loginedGuest.loginId.equals("admin")) {
+            int foundBookingCount = forAllBookingAbleDelete.size();
 
-        else {
-            System.out.printf("======== [%s]님 예약 현황 ========\n", loginedGuest.name);
-            System.out.printf("** 오늘 날짜 : %s **\n", Util.getTodayDate());
-            System.out.println("예약번호 | 객실 | 체크인날짜 | 체크아웃날짜");
-
-            // 예약한 목록 출력
-            for(int i = 0; i < forBookingAbleDelete.size(); i++) {
-                Booking bookingByGuest = forBookingAbleDelete.get(i);
-
-                System.out.printf("    %4d |  %d | %4s |  %4s\n", bookingByGuest.id, bookingByGuest.roomId, bookingByGuest.checkInDate, bookingByGuest.checkOutDate);
+            if(foundBookingCount == 0) {
+                System.out.println("취소 가능한 예약 건이 없습니다.");
             }
 
-            System.out.println("======================================");
-            System.out.print("예약을 취소하시겠습니까?) ");
-            String answer = sc.nextLine();
+            else {
+                System.out.println("========== 전체 예약 목록 ==========");
+                System.out.printf("** 오늘 날짜 : %s **\n", Util.getTodayDate());
+                System.out.println("예약번호 | 호수 | 예약자성함 | 체크인날짜 | 체크아웃날짜");
 
-            if(answer.equals("yes")) {
-                System.out.print("취소하고 싶은 예약번호 입력(숫자만) : ");
-                int answerId = sc.nextInt();
-                sc.nextLine();
+                for(int i = 0; i < forAllBookingAbleDelete.size(); i++) {
+                    Booking bookingALLGuest = forAllBookingAbleDelete.get(i);
 
-                try {
-                    // 예약번호에 따른 booking 가져오기
-                    Booking forPrintBooking = bookingService.getForPrintBooking(answerId);
+                    System.out.printf("  %6d |  %d |     %s | %4s |  %4s\n", bookingALLGuest.id, bookingALLGuest.roomId, bookingALLGuest.guestName, bookingALLGuest.checkInDate, bookingALLGuest.checkOutDate);
+                }
 
-                    if(forPrintBooking.guestName.equals(loginedGuest.name)) {
+                System.out.println("====================================");
+                System.out.print("예약을 취소하시겠습니까?) ");
+                String answer = sc.nextLine();
+
+                if(answer.equals("yes")) {
+                    System.out.print("취소하고 싶은 예약번호 입력(숫자만) : ");
+                    int answerId = sc.nextInt();
+                    sc.nextLine();
+
+                    try {
+                        // 예약번호에 따른 booking 가져오기
+                        Booking forPrintBooking = bookingService.getForPrintBooking(answerId);
                         // 객실번호(303과 같은)를 100으로 나눴을 때 몫을 층 수
                         int floor = forPrintBooking.roomId / 100;
                         // 객실번호(303과 같은)를 100으로 나눴을 때 나머지를 호수
@@ -316,22 +314,84 @@ public class BookingController extends Controller {
                         bookingService.deleteBooking(answerId);
 
                         System.out.println("예약이 취소되었습니다!!");
+                    } catch (NullPointerException e) {
+                        System.out.println("예약번호를 잘못 입력하셨습니다.");
                     }
-                    // 만약 게스트 이름이 같지 않다면
-                    else {
-                        System.out.printf("입력하신 예약번호는 [%s]님의 예약 건이 아닙니다.\n", loginedGuest.name);
-                    }
-                } catch (NullPointerException | InputMismatchException e) {
-                    System.out.println("예약번호를 잘못 입력하셨습니다.");
+                }
+
+                else if(answer.equals("no")) {
+                    System.out.println("예약취소를 중단합니다.");
+                }
+
+                else {
+                    System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");
                 }
             }
+        }
 
-            else if(answer.equals("no")) {
-                System.out.println("예약취소를 중단합니다.");
+        // 회원은 각자 예약 건만 삭제
+        else {
+            int foundBookingCount = forBookingAbleDelete.size();
+            System.out.printf("[%s]님, 취소 가능하신 예약은 총 [%d]건 입니다.\n", loginedGuest.name, foundBookingCount);
+
+            if(foundBookingCount == 0) {
+                System.out.println("취소하실 예약이 없습니다.");
             }
 
             else {
-                System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");
+                System.out.printf("======== [%s]님 예약 현황 ========\n", loginedGuest.name);
+                System.out.printf("** 오늘 날짜 : %s **\n", Util.getTodayDate());
+                System.out.println("예약번호 | 객실 | 체크인날짜 | 체크아웃날짜");
+
+                // 예약한 목록 출력
+                for(int i = 0; i < forBookingAbleDelete.size(); i++) {
+                    Booking bookingByGuest = forBookingAbleDelete.get(i);
+
+                    System.out.printf("    %4d |  %d | %4s |  %4s\n", bookingByGuest.id, bookingByGuest.roomId, bookingByGuest.checkInDate, bookingByGuest.checkOutDate);
+                }
+
+                System.out.println("======================================");
+                System.out.print("예약을 취소하시겠습니까?) ");
+                String answer = sc.nextLine();
+
+                if(answer.equals("yes")) {
+                    System.out.print("취소하고 싶은 예약번호 입력(숫자만) : ");
+                    int answerId = sc.nextInt();
+                    sc.nextLine();
+
+                    try {
+                        // 예약번호에 따른 booking 가져오기
+                        Booking forPrintBooking = bookingService.getForPrintBooking(answerId);
+
+                        if(forPrintBooking.guestName.equals(loginedGuest.name)) {
+                            // 객실번호(303과 같은)를 100으로 나눴을 때 몫을 층 수
+                            int floor = forPrintBooking.roomId / 100;
+                            // 객실번호(303과 같은)를 100으로 나눴을 때 나머지를 호수
+                            int number = forPrintBooking.roomId % 10;
+
+                            // 삭제할 forPrintBooking을 인자로 넘겨 room 정보 수정하기
+                            roomService.setBooingDelete(floor, number, forPrintBooking.checkInDate, forPrintBooking.checkOutDate);
+                            // 예약목록에서 삭제
+                            bookingService.deleteBooking(answerId);
+
+                            System.out.println("예약이 취소되었습니다!!");
+                        }
+                        // 만약 게스트 이름이 같지 않다면
+                        else {
+                            System.out.printf("입력하신 예약번호는 [%s]님의 예약 건이 아닙니다.\n", loginedGuest.name);
+                        }
+                    } catch (NullPointerException | InputMismatchException e) {
+                        System.out.println("예약번호를 잘못 입력하셨습니다.");
+                    }
+                }
+
+                else if(answer.equals("no")) {
+                    System.out.println("예약취소를 중단합니다.");
+                }
+
+                else {
+                    System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");
+                }
             }
         }
     }
