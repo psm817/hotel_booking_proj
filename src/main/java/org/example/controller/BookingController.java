@@ -214,6 +214,7 @@ public class BookingController extends Controller {
         if(loginedGuest.loginId.equals("admin")) {
             while (true) {
                 System.out.printf("======= 전체 예약 목록 =============\n", loginedGuest.name);
+                System.out.printf("** 오늘 날짜 : %s **\n", Util.getTodayDate());
                 System.out.println("호수 | 예약자성함 | 체크인날짜 | 체크아웃날짜");
 
                 for(int i = 0; i < forAllBookings.size(); i++) {
@@ -236,7 +237,8 @@ public class BookingController extends Controller {
                 String answer = sc.nextLine();
 
                 if (answer.equals("yes")) {
-                    System.out.printf("======= [%s]님 예약 현황 =======\n", loginedGuest.name);
+                    System.out.printf("======= [%s]님 예약 리스트 =========\n", loginedGuest.name);
+                    System.out.printf("** 오늘 날짜 : %s **\n", Util.getTodayDate());
                     System.out.println("호수 | 객실타입 | 결제요금 | 체크인날짜 | 체크아웃날짜");
 
                     // 예약한 목록 출력
@@ -251,7 +253,7 @@ public class BookingController extends Controller {
                         }
                     }
 
-                    System.out.println("====================================");
+                    System.out.println("========================================");
                 }
                 else if (answer.equals("no")) {
                     System.out.println("상세보기를 건너뜁니다.");
@@ -280,6 +282,7 @@ public class BookingController extends Controller {
 
         else {
             System.out.printf("==== [%s]님 예약 현황 =======\n", loginedGuest.name);
+            System.out.printf("** 오늘 날짜 : %s **\n", Util.getTodayDate());
             System.out.println("예약번호 | 객실 | 체크인날짜 | 체크아웃날짜");
 
             // 예약한 목록 출력

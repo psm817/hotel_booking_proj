@@ -49,7 +49,7 @@ public class RoomController extends Controller {
             return;
         }
 
-        System.out.print("층 수를 입력(숫자만) : ");
+        System.out.print("층 입력(숫자만) : ");
         int floor = sc.nextInt();
         sc.nextLine();
 

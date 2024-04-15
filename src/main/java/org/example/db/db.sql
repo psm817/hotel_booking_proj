@@ -15,7 +15,7 @@ guestName CHAR(100) NOT NULL,
 guestPhone CHAR(100) NOT NULL,
 roomType INT(10) UNSIGNED NOT NULL,
 bookingPay INT UNSIGNED NOT NULL
-)
+);
 
 SELECT * FROM booking;
 DESC booking;
@@ -32,7 +32,7 @@ loginPw CHAR(100) NOT NULL,
 `name` CHAR(100) NOT NULL,
 email CHAR(100) NOT NULL,
 phoneNum CHAR(100) NOT NULL
-)
+);
 
 SELECT * FROM guest;
 DESC guest;
@@ -42,6 +42,23 @@ DROP TABLE guest;
 INSERT INTO guest SET regDate = NOW(), loginId = 'admin', loginPw = 'admin', `name` = '관리자', email = 'admin@gmail.com', phoneNum = '010-1234-5678';
 INSERT INTO guest SET regDate = NOW(), loginId = 'user1', loginPw = 'user1', `name` = '김철수', email = 'user1@gmail.com', phoneNum = '010-1224-5838';
 INSERT INTO guest SET regDate = NOW(), loginId = 'user2', loginPw = 'user2', `name` = '박영희', email = 'user2@gmail.com', phoneNum = '010-1234-9998';
+
+
+
+--/* review 테이블 생성 */
+CREATE TABLE review (
+id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+regDate DATETIME NOT NULL,
+bookingId INT UNSIGNED NOT NULL,
+guestId INT UNSIGNED NOT NULL,
+`body` TEXT NOT NULL,
+score INT UNSIGNED NOT NULL
+);
+
+SELECT * FROM review;
+DESC review;
+
+DROP TABLE review;
 
 
 --/* room 테이블 및 일주일치 방 생성 */
@@ -54,7 +71,7 @@ checkInDate CHAR(100),
 checkOutDate CHAR(100),
 booked CHAR(100) NOT NULL,
 dayOfSelect DATE NOT NULL
-)
+);
 
 SELECT * FROM room;
 SELECT COUNT(*) FROM room;
