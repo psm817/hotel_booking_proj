@@ -15,14 +15,22 @@ public class BookingService {
         bookingDao = Container.bookingDao;
     }
 
+    // 이름으로 회원별 조회 가능한 booking 리스트 가져오기
     public List<Booking> getForPrintBookings(String name) {
         return bookingDao.getForPrintBookings(name);
     }
 
+    // 이름과 오늘 날짜로 예약취소가 가능한 booking 리스트 가져오기
     public List<Booking> getForPrintBookings(String name, String todayDate) {
         return bookingDao.getForPrintBookings(name, todayDate);
     }
 
+    // 리뷰 작성한 리스트 가져오기
+    public List<Booking> getBookingsAbleReview(String name, String todayDate) {
+        return bookingDao.getBookingsAbleReview(name, todayDate);
+    }
+
+    // 전체 booking 리스트 가져오기
     public List<Booking> getForPrintBookings() {
         return bookingDao.getForPrintBookings();
     }

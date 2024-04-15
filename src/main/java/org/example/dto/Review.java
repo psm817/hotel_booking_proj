@@ -14,7 +14,7 @@ public class Review extends Dto {
     public int bookingId;
     public int guestId;
     public String body;
-    public int score;
+    public double score;
 
 public Review(Map<String, Object> row) {
     super(row);
@@ -22,6 +22,6 @@ public Review(Map<String, Object> row) {
     this.bookingId = (int) row.get("bookingId");
     this.guestId = (int) row.get("guestId");
     this.body = (String) row.get("body");
-    this.score = (int) row.get("score");
+    this.score = (double) row.get("score");
     }
 }
