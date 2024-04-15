@@ -2,7 +2,6 @@ package org.example.dao;
 
 import org.example.container.Container;
 import org.example.db.DBConnection;
-import org.example.dto.Booking;
 import org.example.dto.Room;
 import org.example.util.Util;
 

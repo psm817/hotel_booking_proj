@@ -1,7 +1,5 @@
 package org.example.controller;
 
-import java.util.Scanner;
-
 public class HotelController extends Controller {
     public void doAction(String cmd, String actionMethodName) {
         switch(actionMethodName) {

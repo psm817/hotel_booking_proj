@@ -4,8 +4,6 @@ import org.example.container.Container;
 import org.example.controller.Session;
 import org.example.db.DBConnection;
 import org.example.dto.Booking;
-import org.example.dto.Guest;
-import org.example.dto.Room;
 
 import java.util.ArrayList;
 import java.util.List;

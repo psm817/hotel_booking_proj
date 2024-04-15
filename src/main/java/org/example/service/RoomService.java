@@ -2,7 +2,6 @@ package org.example.service;
 
 import org.example.container.Container;
 import org.example.dao.RoomDao;
-import org.example.dto.Booking;
 import org.example.dto.Room;
 
 import java.util.List;

@@ -3,8 +3,6 @@ package org.example.service;
 import org.example.container.Container;
 import org.example.dao.BookingDao;
 import org.example.dto.Booking;
-import org.example.dto.Guest;
-import org.example.dto.Room;
 
 import java.util.List;
 
