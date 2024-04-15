@@ -213,7 +213,7 @@ public class BookingController extends Controller {
         // 관리자는 모든 예약 확인
         if(loginedGuest.loginId.equals("admin")) {
             while (true) {
-                System.out.printf("======= 전체 예약 목록 =======\n", loginedGuest.name);
+                System.out.printf("======= 전체 예약 목록 =============\n", loginedGuest.name);
                 System.out.println("호수 | 예약자성함 | 체크인날짜 | 체크아웃날짜");
 
                 for(int i = 0; i < forAllBookings.size(); i++) {
@@ -268,22 +268,23 @@ public class BookingController extends Controller {
         // 로그인 된 게스트 가져오기
         Guest loginedGuest = session.getLoginedGuest();
 
-        // 로그인된 회원이 예약한 목록 가져오기
-        List<Booking> forPrintBookings = bookingService.getForPrintBookings(loginedGuest.name);
+        // 오늘 날짜로 체크인이 지난 booking은 제외하고 로그인된 회원이 예약한 목록 가져오기
+        List<Booking> forBookingAbleDelete = bookingService.getForPrintBookings(loginedGuest.name, Util.getTodayDate());
 
-        int foundBookingCount = forPrintBookings.size();
-        System.out.printf("[%s]님, 총 [%d]건의 예약이 있습니다.\n", loginedGuest.name, foundBookingCount);
+        int foundBookingCount = forBookingAbleDelete.size();
+        System.out.printf("[%s]님, 취소 가능하신 예약은 총 [%d]건 입니다.\n", loginedGuest.name, foundBookingCount);
 
         if(foundBookingCount == 0) {
             System.out.println("취소하실 예약이 없습니다.");
         }
+
         else {
             System.out.printf("==== [%s]님 예약 현황 =======\n", loginedGuest.name);
             System.out.println("예약번호 | 객실 | 체크인날짜 | 체크아웃날짜");
 
             // 예약한 목록 출력
-            for(int i = 0; i < forPrintBookings.size(); i++) {
-                Booking bookingByGuest = forPrintBookings.get(i);
+            for(int i = 0; i < forBookingAbleDelete.size(); i++) {
+                Booking bookingByGuest = forBookingAbleDelete.get(i);
 
                 System.out.printf("    %4d |  %d | %4s |  %4s\n", bookingByGuest.id, bookingByGuest.roomId, bookingByGuest.checkInDate, bookingByGuest.checkOutDate);
             }
@@ -312,9 +313,11 @@ public class BookingController extends Controller {
 
                 System.out.println("예약이 취소되었습니다!!");
             }
+
             else if(answer.equals("no")) {
                 System.out.println("예약취소를 중단합니다.");
             }
+
             else {
                 System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");
             }

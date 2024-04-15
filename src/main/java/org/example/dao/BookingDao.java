@@ -55,6 +55,24 @@ public class BookingDao extends Dao {
         return bookings;
     }
 
+    public List<Booking> getForPrintBookings(String name, String todayDate) {
+        // 로그인 된 게스트 가져오기
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("SELECT * "));
+        sb.append(String.format("FROM booking "));
+        sb.append(String.format("WHERE guestName = '%s' AND checkInDate >= '%s' ", name, todayDate));
+
+        List<Booking> bookings = new ArrayList<>();
+        List<Map<String, Object>> rows = dbConnection.selectRows(sb.toString());
+
+        for(Map<String, Object> row : rows) {
+            bookings.add(new Booking(row));
+        }
+
+        return bookings;
+    }
+
     public List<Booking> getForPrintBookings() {
         // 로그인 된 게스트 가져오기
         StringBuilder sb = new StringBuilder();

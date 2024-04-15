@@ -19,6 +19,10 @@ public class BookingService {
         return bookingDao.getForPrintBookings(name);
     }
 
+    public List<Booking> getForPrintBookings(String name, String todayDate) {
+        return bookingDao.getForPrintBookings(name, todayDate);
+    }
+
     public List<Booking> getForPrintBookings() {
         return bookingDao.getForPrintBookings();
     }
