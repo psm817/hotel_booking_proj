@@ -94,7 +94,7 @@ public class App {
                 case "booking/check" :
                 case "booking/delete" :
                 case "guest/logout" :
-                case "booking/review" :
+                case "review/write" :
                     if(Container.getSession().isLogined() == false) {
                         System.out.println("로그인 후 이용가능합니다.");
                         continue;
@@ -133,7 +133,7 @@ public class App {
         System.out.println("5. 예약 취소 : booking delete");
         System.out.println("6. 로그인/로그아웃 : guest login/logout");
         System.out.println("7. 회원 가입 : guest join");
-        System.out.println("8. 리뷰 남기기 : booking review");
+        System.out.println("8. 리뷰 남기기 : review write");
         System.out.println("9. 리뷰 보기 : review list");
         System.out.println("10. 서비스 다시보기 : service");
         System.out.println("===========================================");
