@@ -33,15 +33,7 @@ public class ReviewDao extends Dao {
     public List<Review> getForPrintReviews() {
         StringBuilder sb = new StringBuilder();
 
-//        sb.append(String.format("SELECT B.roomId, "));
-//        sb.append(String.format("R.score, "));
-//        sb.append(String.format("G.loginId, "));
-//        sb.append(String.format("R.body "));
-//        sb.append(String.format("FROM booking AS B INNER JOIN review AS R INNER JOIN guest AS G "));
-//        sb.append(String.format("WHERE B.id = R.bookingId AND G.name = B.guestName "));
-
         sb.append(String.format("SELECT * FROM review "));
-
 
         List<Review> reviews = new ArrayList<>();
         List<Map<String, Object>> rows = dbConnection.selectRows(sb.toString());

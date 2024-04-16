@@ -60,8 +60,6 @@ public class ReviewController extends Controller{
             Guest replyGuest = guestService.getGuestByName(replyBooking.guestName);
 
             System.out.printf("%4d |   %6d |  %1.1f |   %6s | %s\n", review.id, replyBooking.roomId, review.score, replyGuest.loginId, review.body);
-
-            sumScore += review.score;
         }
 
         System.out.println("===========================================");

@@ -1,5 +1,6 @@
 package org.example.util;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -66,5 +67,22 @@ public class Util {
         String checkOutDateBefore = dayBeforeCheckOutDate.format(formatter);
 
         return checkOutDateBefore;
+    }
+
+    // 파일 쓰기
+    public static void writeFileContents(String filePath, String contents) {
+        BufferedOutputStream bs = null;
+        try {
+            bs = new BufferedOutputStream(new FileOutputStream(filePath));
+            bs.write(contents.getBytes()); // Byte형으로만 넣을 수 있음
+        } catch (Exception e) {
+            e.getStackTrace();
+        } finally {
+            try {
+                bs.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

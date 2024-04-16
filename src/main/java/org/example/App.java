@@ -5,6 +5,7 @@ import org.example.controller.*;
 import org.example.db.DBConnection;
 import org.example.util.Util;
 
+import java.rmi.server.ExportException;
 import java.util.Scanner;
 
 public class App {
@@ -19,13 +20,14 @@ public class App {
     public void start() {
         callAllServices();
 
+        Scanner sc = new Scanner(System.in);
+
         HotelController hotelController = new HotelController();
         RoomController roomController = new RoomController();
         BookingController bookingController = new BookingController();
         GuestController guestController = new GuestController();
         ReviewController reviewController = new ReviewController();
-
-        Scanner sc = new Scanner(System.in);
+        ExportController exportController = new ExportController();
 
         while(true) {
             System.out.print("원하는 서비스 입력) ");
@@ -71,6 +73,9 @@ public class App {
             }
             else if(controllerName.equals("review")) {
                 controller = reviewController;
+            }
+            else if(controllerName.equals("export")) {
+                controller = exportController;
             }
             else {
                 System.out.println("존재하지 않는 서비스입니다.");
@@ -126,8 +131,9 @@ public class App {
         System.out.println("7. 회원 가입 : guest join");
         System.out.println("8. 리뷰 남기기 : review write");
         System.out.println("9. 리뷰 보기 : review list");
-        System.out.println("10. 서비스 다시보기 : service");
-        System.out.println("11. 프로그램 종료 : exit");
+        System.out.println("10. 리뷰 html로 추출하기 : export html");
+        System.out.println("11. 서비스 다시보기 : service");
+        System.out.println("12. 프로그램 종료 : exit");
         System.out.println("===========================================");
         System.out.printf("\n");
     }
