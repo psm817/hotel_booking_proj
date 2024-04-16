@@ -27,15 +27,6 @@ public class App {
 
         Scanner sc = new Scanner(System.in);
 
-        // 현재 날짜를 기준으로 일주일 범위에 속하는 날짜의 방을 추가 생성 (15개)
-        if(Util.getDaysBetween(Util.getTodayDate(), Util.getSevenDateLater()) < 7) {
-            for(int i = 3; i <= 5; i++) {
-                for(int j = 1; j <= 5; j++) {
-                    Container.roomService.roomDatePlus(i, j);
-                }
-            }
-        }
-
         while(true) {
             System.out.print("원하는 서비스 입력) ");
             String cmd = sc.nextLine();
@@ -136,6 +127,7 @@ public class App {
         System.out.println("8. 리뷰 남기기 : review write");
         System.out.println("9. 리뷰 보기 : review list");
         System.out.println("10. 서비스 다시보기 : service");
+        System.out.println("11. 프로그램 종료 : exit");
         System.out.println("===========================================");
         System.out.printf("\n");
     }

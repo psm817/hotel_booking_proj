@@ -94,59 +94,73 @@ public class ReviewController extends Controller{
             }
 
             System.out.println("======================================");
-            System.out.print("리뷰를 작성하시겠습니까?) ");
-            String answer = sc.nextLine();
 
-            if(answer.equals("yes")) {
-                System.out.print("작성하고 싶은 예약번호 입력(숫자만) : ");
-                int answerId = sc.nextInt();
-                sc.nextLine();
+            while(true) {
+                System.out.print("리뷰를 작성하시겠습니까?) ");
+                String answer = sc.nextLine();
 
-                try {
-                    // 예약번호에 따른 booking 가져오기
-                    Booking forPrintBooking = bookingService.getForPrintBooking(answerId);
+                if(answer.equals("yes")) {
+                    while(true) {
+                        System.out.print("작성하고 싶은 예약번호 입력(숫자만) : ");
+                        int answerId = sc.nextInt();
+                        sc.nextLine();
 
-                    if(forPrintBooking.guestName.equals(loginedGuest.name)) {
-                        while(true) {
-                            System.out.println("** 평점은 총 5점 만점 중 소수점 첫째자리까지 입력 가능 **");
-                            System.out.print("평점 입력) ");
-                            double score = sc.nextDouble();
-                            sc.nextLine();
+                        try {
+                            // 예약번호에 따른 booking 가져오기
+                            Booking forPrintBooking = bookingService.getForPrintBooking(answerId);
 
-                            // 소수 첫째자리 체크
-                            if(score != Math.round(score * 10) / 10.0) {
-                                System.out.println("평점은 소수점 첫째짜리까지만 입력이 가능합니다.");
-                                continue;
-                            }
-                            else if(score > 5) {
-                                System.out.println("평점은 최대 5점 만점입니다.");
-                                continue;
-                            }
-                            else {
-                                System.out.print("리뷰 작성) ");
-                                String reviewBody = sc.nextLine();
+                            if(forPrintBooking.guestName.equals(loginedGuest.name)) {
+                                while(true) {
+                                    System.out.println("** 평점은 총 5점 만점 중 소수점 첫째자리까지 입력 가능 **");
+                                    System.out.print("평점 입력) ");
+                                    double score = sc.nextDouble();
+                                    sc.nextLine();
 
-                                reviewService.doWrite(answerId, loginedGuest.id, reviewBody, score);
-                                System.out.println("리뷰가 등록되었습니다!!");
+                                    // 소수 첫째자리 체크
+                                    if(score != Math.round(score * 10) / 10.0) {
+                                        System.out.println("평점은 소수점 첫째짜리까지만 입력이 가능합니다.");
+                                        continue;
+                                    }
+                                    else if(score > 5) {
+                                        System.out.println("평점은 최대 5점 만점입니다.");
+                                        continue;
+                                    }
+                                    else {
+                                        System.out.print("리뷰 작성) ");
+                                        String reviewBody = sc.nextLine();
+
+                                        reviewService.doWrite(answerId, loginedGuest.id, reviewBody, score);
+                                        System.out.println("리뷰가 등록되었습니다!!");
+                                        break;
+                                    }
+                                }
+
                                 break;
                             }
+                            // 만약 게스트 이름이 같지 않다면
+                            else {
+                                System.out.printf("입력하신 예약번호는 [%s]님의 예약 건이 아닙니다.\n", loginedGuest.name);
+                                continue;
+                            }
+
+                        } catch (NullPointerException | InputMismatchException e) {
+                            System.out.println("예약번호를 잘못 입력하셨습니다.");
+                            continue;
                         }
                     }
-                    // 만약 게스트 이름이 같지 않다면
-                    else {
-                        System.out.printf("입력하신 예약번호는 [%s]님의 예약 건이 아닙니다.\n", loginedGuest.name);
-                    }
-                } catch (NullPointerException | InputMismatchException e) {
-                    System.out.println("예약번호를 잘못 입력하셨습니다.");
+
+                    break;
                 }
-            }
 
-            else if(answer.equals("no")) {
-                System.out.println("리뷰 작성을 중단합니다.");
-            }
+                else if(answer.equals("no")) {
+                    System.out.println("리뷰 작성을 중단합니다.");
+                    break;
+                }
 
-            else {
-                System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");
+                else {
+                    System.out.println("\'yes\' 또는 \'no\'를 입력해주세요");
+                    continue;
+                }
             }
         }
     }

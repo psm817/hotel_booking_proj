@@ -40,48 +40,67 @@ public class RoomController extends Controller {
             return;
         }
 
-        System.out.print("확인하시고 싶은 날짜 입력) ");
-        String checkDate = sc.nextLine();
+        while(true) {
+            System.out.print("확인하시고 싶은 날짜 입력) ");
+            String checkDate = sc.nextLine();
 
+            if(!Util.checkWeekDate(checkDate)) {
+                System.out.println("오늘 날짜부터 7일간 조회 가능합니다.");
+                continue;
+            }
 
-        if(!Util.checkWeekDate(checkDate)) {
-            System.out.println("오늘 날짜부터 7일간 조회 가능합니다.");
-            return;
-        }
-
-        System.out.print("층 입력(숫자만) : ");
-        int floor = sc.nextInt();
-        sc.nextLine();
-
-        if(floor > 5 || floor < 3) {
-            System.out.println("층 수를 잘못 입력하셨습니다.");
-            System.out.println("3, 4, 5층 중 하나를 입력해주세요.");
-        }
-        else {
-            System.out.printf("==== [%s] %d층 객실 현황 ====\n", checkDate, floor);
-            System.out.println("호수 | 객실타입 | 상태");
-
-            for(int i = 0; i < forListRooms.size(); i++) {
-                Room room = forListRooms.get(i);
-
-                // 현재 날짜를 기준으로 지나간 날짜의 방은 삭제
-                if (!Util.checkWeekDate(room.dayOfSelect)) {
-                    roomService.roomDateDelete(room.dayOfSelect);
-                }
-
-                if(room.dayOfSelect.equals(checkDate)) {
-                    if(room.floor == floor) {
-                        if(room.type == 1) {
-                            System.out.printf("%d  |     싱글 | %s\n", (room.floor * 100 +room.roomNum), room.booked);
-                        }
-                        else {
-                            System.out.printf("%d  |     더블 | %s\n", (room.floor * 100 +room.roomNum), room.booked);
+            // 현재 날짜를 기준으로 일주일 범위에 속하는 날짜의 방을 추가 생성 (15개)
+            if(Util.getDaysBetween(Util.getTodayDate(), checkDate) <= 7) {
+                if(checkDate.equals(Util.getSevenDateLater())) {
+                    for(int i = 3; i <= 5; i++) {
+                        for(int j = 1; j <= 5; j++) {
+                            Container.roomService.roomDatePlus(i, j);
                         }
                     }
                 }
             }
 
-            System.out.println("====================================");
+            while(true) {
+                System.out.print("층 입력(숫자만) : ");
+                int floor = sc.nextInt();
+                sc.nextLine();
+
+                if(floor > 5 || floor < 3) {
+                    System.out.println("층 수를 잘못 입력하셨습니다.");
+                    System.out.println("3, 4, 5층 중 하나를 입력해주세요.");
+                    continue;
+                }
+
+                else {
+                    System.out.printf("==== [%s] %d층 객실 현황 ====\n", checkDate, floor);
+                    System.out.println("호수 | 객실타입 | 상태");
+
+                    for(int i = 0; i < forListRooms.size(); i++) {
+                        Room room = forListRooms.get(i);
+
+                        // 현재 날짜를 기준으로 지나간 날짜의 방은 삭제
+                        if (!Util.checkWeekDate(room.dayOfSelect)) {
+                            roomService.roomDateDelete(room.dayOfSelect);
+                        }
+
+                        if(room.dayOfSelect.equals(checkDate)) {
+                            if(room.floor == floor) {
+                                if(room.type == 1) {
+                                    System.out.printf("%d  |     싱글 | %s\n", (room.floor * 100 +room.roomNum), room.booked);
+                                }
+                                else {
+                                    System.out.printf("%d  |     더블 | %s\n", (room.floor * 100 +room.roomNum), room.booked);
+                                }
+                            }
+                        }
+                    }
+
+                    System.out.println("====================================");
+                    break;
+                }
+            }
+
+            break;
         }
     }
 }

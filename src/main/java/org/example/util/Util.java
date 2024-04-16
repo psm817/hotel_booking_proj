@@ -16,9 +16,9 @@ public class Util {
 
     public static String getSevenDateLater() {
         LocalDate today = LocalDate.now();
-        LocalDate sixDaysLater = today.plusDays(7);
+        LocalDate sevenDaysLater = today.plusDays(7);
 
-        String sevenDaysLaterString = sixDaysLater.format(formatter);
+        String sevenDaysLaterString = sevenDaysLater.format(formatter);
 
         return sevenDaysLaterString;
     }
