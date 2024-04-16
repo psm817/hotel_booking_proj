@@ -80,7 +80,7 @@ public class ReviewController extends Controller{
         }
 
         else {
-            System.out.printf("======== [%s]님 숙박 이력 ========\n", loginedGuest.name);
+            System.out.printf("================== [%s]님 숙박 이력 ==================\n", loginedGuest.name);
             System.out.printf("** 오늘 날짜 : %s **\n", Util.getTodayDate());
             System.out.println("예약번호 | 객실 | 체크인날짜 | 체크아웃날짜");
 
@@ -91,7 +91,7 @@ public class ReviewController extends Controller{
                 System.out.printf("    %4d |  %d | %4s |  %4s\n", bookingByGuest.id, bookingByGuest.roomId, bookingByGuest.checkInDate, bookingByGuest.checkOutDate);
             }
 
-            System.out.println("======================================");
+            System.out.println("==========================================================");
 
             while(true) {
                 System.out.print("리뷰를 작성하시겠습니까?) ");

@@ -5,7 +5,6 @@ import org.example.controller.*;
 import org.example.db.DBConnection;
 import org.example.util.Util;
 
-import java.rmi.server.ExportException;
 import java.util.Scanner;
 
 public class App {

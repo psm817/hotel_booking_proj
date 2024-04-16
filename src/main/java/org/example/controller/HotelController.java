@@ -22,11 +22,11 @@ public class HotelController extends Controller {
         System.out.println("객실 종류 : 싱글(홀수) / 더블(짝수)");
         System.out.println("객실 수용 인원 : 싱글(2인) / 더블(4인)");
         System.out.println("객실 요금 : 싱글(150,000원) / 더블(250,000원)");
+        System.out.println("체크인 시간 : 오후 3시 / 체크아웃 시간 : 오전 11시");
         System.out.println("** 객실 예약은 일주일 범위 내에서만 가능 **");
         System.out.println("** 인원 초과 시, 인당 20,000원 추가 **");
         System.out.println("===================================================");
-        System.out.printf("\n");
-
+        
         System.out.println("=================== 객실 위치 =====================");
         System.out.println("*** 층별로 위치는 동일 ***");
         System.out.println("━━━━━┓\n" +

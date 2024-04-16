@@ -3,8 +3,6 @@ package org.example.controller;
 import org.example.container.Container;
 import org.example.service.ExportService;
 
-import java.util.Scanner;
-
 public class ExportController extends Controller {
     private ExportService exportService;
 
@@ -24,7 +22,7 @@ public class ExportController extends Controller {
     }
 
     private void doHtml() {
-        System.out.println("리뷰 html을 생성합니다.");
+        System.out.println("호텔 숙박 후기 html을 생성하였습니다.");
         exportService.makeHtml();
     }
 }

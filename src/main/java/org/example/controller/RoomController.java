@@ -72,7 +72,7 @@ public class RoomController extends Controller {
                 }
 
                 else {
-                    System.out.printf("==== [%s] %d층 객실 현황 ====\n", checkDate, floor);
+                    System.out.printf("======== [%s] %d층 객실 현황 =======\n", checkDate, floor);
                     System.out.println("호수 | 객실타입 | 상태");
 
                     for(int i = 0; i < forListRooms.size(); i++) {
