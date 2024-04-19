@@ -118,7 +118,7 @@ public class App {
     }
 
     private void callAllServices() {
-        System.out.println("호텔 예약 관리 시스템에 오신 것을 환영합니다.");
+        System.out.println("호텔 예약 관리 프로그램에 오신 것을 환영합니다.");
         System.out.printf("** 오늘 날짜 : %s **\n", Util.getTodayDate());
         System.out.println("=============== 서비스 모음 ===============");
         System.out.println("1. 호텔 소개 : hotel introduce (필독바람!!)");

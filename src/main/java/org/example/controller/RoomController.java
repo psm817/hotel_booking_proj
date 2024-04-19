@@ -54,7 +54,7 @@ public class RoomController extends Controller {
                 if(checkDate.equals(Util.getSevenDateLater())) {
                     for(int i = 3; i <= 5; i++) {
                         for(int j = 1; j <= 5; j++) {
-                            Container.roomService.roomDatePlus(i, j);
+                            roomService.roomDatePlus(i, j);
                         }
                     }
                 }
@@ -95,7 +95,7 @@ public class RoomController extends Controller {
                         }
                     }
 
-                    System.out.println("====================================");
+                    System.out.println("===========================================");
                     break;
                 }
             }

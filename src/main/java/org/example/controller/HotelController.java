@@ -27,7 +27,7 @@ public class HotelController extends Controller {
         System.out.println("** 인원 초과 시, 인당 20,000원 추가 **");
         System.out.println("===================================================");
         
-        System.out.println("=================== 객실 위치 =====================");
+        System.out.println("=================== 객실 배치 =====================");
         System.out.println("*** 층별로 위치는 동일 ***");
         System.out.println("━━━━━┓\n" +
                 "┓┓┓┓┓┃         ┎━━━━━━┒      ┎━━━━━━┒      ┎━━━━━━┒\n" +

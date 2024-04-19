@@ -43,7 +43,7 @@ public class ExportService {
             html += "<h1>숙박 후기</h1>";
             html += "<div>리뷰번호 : " + review.id + "</div>";
             html += "<div>객실번호 : " + replyBooking.roomId + "</div>";
-            html += "<div>평점 : " + review.score + " / 5" + "</div>";
+            html += "<div>평점 : " + review.score + " / 5.0" + "</div>";
             html += "<div>작성자ID : " + replyGuest.loginId + "</div>";
             html += "<div>내용 : " + review.body + "</div>";
 

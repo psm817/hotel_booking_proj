@@ -331,7 +331,7 @@ public class BookingController extends Controller {
                             int number = forPrintBooking.roomId % 10;
 
                             // 삭제할 forPrintBooking을 인자로 넘겨 room 정보 수정하기
-                            roomService.setBooingDelete(floor, number, forPrintBooking.checkInDate, forPrintBooking.checkOutDate);
+                            roomService.setBookingDelete(floor, number, forPrintBooking.checkInDate, forPrintBooking.checkOutDate);
                             // 예약목록에서 삭제
                             bookingService.deleteBooking(answerId);
 
@@ -400,7 +400,7 @@ public class BookingController extends Controller {
                                     int number = forPrintBooking.roomId % 10;
 
                                     // 삭제할 forPrintBooking을 인자로 넘겨 room 정보 수정하기
-                                    roomService.setBooingDelete(floor, number, forPrintBooking.checkInDate, forPrintBooking.checkOutDate);
+                                    roomService.setBookingDelete(floor, number, forPrintBooking.checkInDate, forPrintBooking.checkOutDate);
                                     // 예약목록에서 삭제
                                     bookingService.deleteBooking(answerId);
 
