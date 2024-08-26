@@ -377,7 +377,7 @@ public class BookingController extends Controller {
                     System.out.printf("    %4d |  %d | %4s |  %4s\n", bookingByGuest.id, bookingByGuest.roomId, bookingByGuest.checkInDate, bookingByGuest.checkOutDate);
                 }
 
-                System.out.println("==========================================================");
+                System.out.println("==============================================================");
 
                 while(true) {
                     System.out.print("예약을 취소하시겠습니까?) ");

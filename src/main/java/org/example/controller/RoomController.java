@@ -33,6 +33,7 @@ public class RoomController extends Controller {
 
     public void showList() {
         List<Room> forListRooms = roomService.getRooms();
+        System.out.printf("** 오늘 날짜 : %s **\n", Util.getTodayDate());
 
         String[] cmdBits = cmd.split(" ");
         if(cmdBits.length > 2) {
